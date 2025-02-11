@@ -21,6 +21,6 @@ public enum SecondaryEffect
     Toux,
     Toxique,
     Tremblement, 
-    Tristesse
-    
+    Tristesse,
+    Aucun
 }

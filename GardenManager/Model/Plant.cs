@@ -19,4 +19,13 @@ public class Plant
         Effects = effects;
         SecondaryEffect = secondaryEffect;
     }
+
+    public Plant(string name, Essence essence, Genus genus)
+    {
+        Name = name;
+        Essence = essence;
+        Genus = genus;
+        Effects = [];
+        SecondaryEffect = SecondaryEffect.Aucun;
+    }
 }
