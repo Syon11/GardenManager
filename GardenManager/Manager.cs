@@ -145,7 +145,9 @@ public class Manager
         int Inequality;
         int NumberOfEffects = Enum.GetNames(typeof(Effect)).Length;
         int NumberOfSecondaryEffects = Enum.GetNames(typeof(SecondaryEffect)).Length;
-        bool GoodDistribution = false;
+        bool GoodDistribution1 = false;
+        bool GoodDistribution2 = false;
+        Random random = new Random();
         
         BaseNumber = (PlantsCount * EFFECTS_PER_PLANT) / NumberOfEffects;
         Inequality = (PlantsCount * EFFECTS_PER_PLANT) % NumberOfEffects;
@@ -155,19 +157,19 @@ public class Manager
             EffectsNumbers.Add(i <= Inequality ? BaseNumber + 1 : BaseNumber);
         }
 
-        while (!GoodDistribution)
+        while (!GoodDistribution1)
         {
-            GoodDistribution = true;
+            GoodDistribution1 = true;
             for (int i = 0; i < PlantsCount; i++)
             {
                 List<int> numbers = Enumerable.Range(0, NumberOfEffects).ToList();
                 RemoveEmptyNumbers(EffectsNumbers, numbers);
                 if (numbers.Count < 4)
                 {
-                    GoodDistribution = false;
+                    GoodDistribution1 = false;
                     break;
                 }
-                Random random = new Random();
+
                 ShuffleList(numbers, random);
                 List<Effect> effects = [(Effect)numbers[0], (Effect)numbers[1], (Effect)numbers[2], (Effect)numbers[3]];
                 EffectsNumbers[numbers[0]]--;
@@ -176,6 +178,11 @@ public class Manager
                 EffectsNumbers[numbers[3]]--;
                 Plants[i].Effects = effects;
             }
+        }
+
+        foreach (Plant plant in Plants)
+        {
+            plant.SecondaryEffect = (SecondaryEffect)random.Next(0, NumberOfSecondaryEffects);
         }
 
         foreach (var plant in Plants)
