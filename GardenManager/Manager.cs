@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 using GardenManager.Enums;
 using GardenManager.Model;
 using System.Text.Json;
@@ -8,20 +6,27 @@ namespace GardenManager;
 
 public class Manager
 {
-    public List<Plant> Plants { get; set; }
-    public List<User> Users { get; set; }
-    public const string JSON_PLANTS = "plants.json";
+    private List<Plant> Plants { get; set; }
+    private List<User> Users { get; set; }
+    private const string JsonPlants = "plants.json";
+    private const string JsonUsers = "users.json";
 
     public Manager()
     {
         Plants = [];
         Users = [];
         Init();
+        Run();
     }
 
+    private void Run()
+    {
+        
+    }
+    
     private void Init()
     {
-        if (!File.Exists(JSON_PLANTS))
+        if (!File.Exists(JsonPlants))
         {
             InitPlantsBase();
             RandomizeEffects();
@@ -31,9 +36,10 @@ public class Manager
         {
             LoadPlantsFromFile();
         }
+        LoadUsersFromFile();
     }
     
-    public void InitPlantsBase()
+    private void InitPlantsBase()
     {
         Plants =
         [
@@ -138,51 +144,50 @@ public class Manager
 
     private void RandomizeEffects()
     {
-        const int EFFECTS_PER_PLANT = 4;
-        int PlantsCount = Plants.Count;
-        List<int> EffectsNumbers = [];
-        int BaseNumber;
-        int Inequality;
-        int NumberOfEffects = Enum.GetNames(typeof(Effect)).Length;
-        int NumberOfSecondaryEffects = Enum.GetNames(typeof(SecondaryEffect)).Length;
-        bool GoodDistribution1 = false;
-        bool GoodDistribution2 = false;
+        const int effectsPerPlant = 4;
+        int plantsCount = Plants.Count;
+        List<int> effectsNumbers = [];
+        int baseNumber;
+        int inequality;
+        int numberOfEffects = Enum.GetNames(typeof(Effect)).Length;
+        int numberOfSecondaryEffects = Enum.GetNames(typeof(SecondaryEffect)).Length;
+        bool goodDistribution1 = false;
         Random random = new Random();
         
-        BaseNumber = (PlantsCount * EFFECTS_PER_PLANT) / NumberOfEffects;
-        Inequality = (PlantsCount * EFFECTS_PER_PLANT) % NumberOfEffects;
+        baseNumber = (plantsCount * effectsPerPlant) / numberOfEffects;
+        inequality = (plantsCount * effectsPerPlant) % numberOfEffects;
 
-        for (int i = 0; i < NumberOfEffects; i++)
+        for (int i = 0; i < numberOfEffects; i++)
         {
-            EffectsNumbers.Add(i <= Inequality ? BaseNumber + 1 : BaseNumber);
+            effectsNumbers.Add(i <= inequality ? baseNumber + 1 : baseNumber);
         }
 
-        while (!GoodDistribution1)
+        while (!goodDistribution1)
         {
-            GoodDistribution1 = true;
-            for (int i = 0; i < PlantsCount; i++)
+            goodDistribution1 = true;
+            for (int i = 0; i < plantsCount; i++)
             {
-                List<int> numbers = Enumerable.Range(0, NumberOfEffects).ToList();
-                RemoveEmptyNumbers(EffectsNumbers, numbers);
+                List<int> numbers = Enumerable.Range(0, numberOfEffects).ToList();
+                RemoveEmptyNumbers(effectsNumbers, numbers);
                 if (numbers.Count < 4)
                 {
-                    GoodDistribution1 = false;
+                    goodDistribution1 = false;
                     break;
                 }
 
                 ShuffleList(numbers, random);
                 List<Effect> effects = [(Effect)numbers[0], (Effect)numbers[1], (Effect)numbers[2], (Effect)numbers[3]];
-                EffectsNumbers[numbers[0]]--;
-                EffectsNumbers[numbers[1]]--;
-                EffectsNumbers[numbers[2]]--;
-                EffectsNumbers[numbers[3]]--;
+                effectsNumbers[numbers[0]]--;
+                effectsNumbers[numbers[1]]--;
+                effectsNumbers[numbers[2]]--;
+                effectsNumbers[numbers[3]]--;
                 Plants[i].Effects = effects;
             }
         }
 
         foreach (Plant plant in Plants)
         {
-            plant.SecondaryEffect = (SecondaryEffect)random.Next(0, NumberOfSecondaryEffects);
+            plant.SecondaryEffect = (SecondaryEffect)random.Next(0, numberOfSecondaryEffects);
         }
 
         foreach (var plant in Plants)
@@ -191,12 +196,12 @@ public class Manager
         }
     }
 
-    private void RemoveEmptyNumbers(List<int> EffectsNumbers, List<int> numbers)
+    private void RemoveEmptyNumbers(List<int> effectsNumbers, List<int> numbers)
     {
         List<int> numbersToRemove = new List<int>();
-        for (int i = 0; i < EffectsNumbers.Count; i++)
+        for (int i = 0; i < effectsNumbers.Count; i++)
         {
-            if (EffectsNumbers[i] == 0)
+            if (effectsNumbers[i] == 0)
             {
                 numbersToRemove.Add(numbers[i]);
             }
@@ -222,12 +227,22 @@ public class Manager
     private void SavePlantsToFile()
     {
         string jsonString = JsonSerializer.Serialize(Plants);
-        File.WriteAllText(JSON_PLANTS, jsonString);
+        File.WriteAllText(JsonPlants, jsonString);
     }
 
     private void LoadPlantsFromFile()
     {
-        string jsonString = File.ReadAllText(JSON_PLANTS);
+        string jsonString = File.ReadAllText(JsonPlants);
         Plants = JsonSerializer.Deserialize<List<Plant>>(jsonString)!;
+    }
+
+    private void LoadUsersFromFile()
+    {
+        string jsonString = File.ReadAllText(JsonUsers);
+        List<User>? tempUsers = JsonSerializer.Deserialize<List<User>>(jsonString);
+        if (tempUsers != null)
+        {
+            Users = tempUsers;
+        }
     }
 }
