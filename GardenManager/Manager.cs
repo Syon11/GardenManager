@@ -145,28 +145,42 @@ public class Manager
         int Inequality;
         int NumberOfEffects = Enum.GetNames(typeof(Effect)).Length;
         int NumberOfSecondaryEffects = Enum.GetNames(typeof(SecondaryEffect)).Length;
-
+        bool GoodDistribution = false;
+        
         BaseNumber = (PlantsCount * EFFECTS_PER_PLANT) / NumberOfEffects;
         Inequality = (PlantsCount * EFFECTS_PER_PLANT) % NumberOfEffects;
 
         for (int i = 0; i < NumberOfEffects; i++)
         {
-            EffectsNumbers.Add(i < Inequality ? BaseNumber + 1 : BaseNumber);
+            EffectsNumbers.Add(i <= Inequality ? BaseNumber + 1 : BaseNumber);
         }
 
-        for (int i = 0; i < PlantsCount; i++)
+        while (!GoodDistribution)
         {
-            List<int> numbers = Enumerable.Range(0, NumberOfEffects).ToList();
-            RemoveEmptyNumbers(EffectsNumbers, numbers);
-            Random random = new Random();
-            ShuffleList(numbers, random);
-            List<Effect> effects = [(Effect)numbers[0], (Effect)numbers[1], (Effect)numbers[2], (Effect)numbers[3]];
-            EffectsNumbers[numbers[0]]--;
-            EffectsNumbers[numbers[1]]--;
-            EffectsNumbers[numbers[2]]--;
-            EffectsNumbers[numbers[3]]--;
-            Plants[i].Effects = effects;
+            GoodDistribution = true;
+            for (int i = 0; i < PlantsCount; i++)
+            {
+                List<int> numbers = Enumerable.Range(0, NumberOfEffects).ToList();
+                RemoveEmptyNumbers(EffectsNumbers, numbers);
+                if (numbers.Count < 4)
+                {
+                    GoodDistribution = false;
+                    break;
+                }
+                Random random = new Random();
+                ShuffleList(numbers, random);
+                List<Effect> effects = [(Effect)numbers[0], (Effect)numbers[1], (Effect)numbers[2], (Effect)numbers[3]];
+                EffectsNumbers[numbers[0]]--;
+                EffectsNumbers[numbers[1]]--;
+                EffectsNumbers[numbers[2]]--;
+                EffectsNumbers[numbers[3]]--;
+                Plants[i].Effects = effects;
+            }
+        }
 
+        foreach (var plant in Plants)
+        {
+            Console.WriteLine(plant.Effects);
         }
     }
 

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using GardenManager.Enums;
 
 namespace GardenManager.Model;
@@ -11,6 +12,7 @@ public class Plant
     public List<Effect> Effects { get; set; }
     public SecondaryEffect SecondaryEffect { get; set; }
 
+    [JsonConstructor]
     public Plant(string name, Essence essence, Genus genus, List<Effect> effects, SecondaryEffect secondaryEffect)
     {
         Name = name;
