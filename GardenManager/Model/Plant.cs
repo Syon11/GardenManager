@@ -13,8 +13,9 @@ public class Plant
     public SecondaryEffect SecondaryEffect { get; set; }
 
     [JsonConstructor]
-    public Plant(string name, Essence essence, Genus genus, List<Effect> effects, SecondaryEffect secondaryEffect)
+    public Plant(int id, string name, Essence essence, Genus genus, List<Effect> effects, SecondaryEffect secondaryEffect)
     {
+        Id = id;
         Name = name;
         Essence = essence;
         Genus = genus;
@@ -22,8 +23,9 @@ public class Plant
         SecondaryEffect = secondaryEffect;
     }
 
-    public Plant(string name, Essence essence, Genus genus)
+    public Plant(int id, string name, Essence essence, Genus genus)
     {
+        Id = id;
         Name = name;
         Essence = essence;
         Genus = genus;
