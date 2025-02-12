@@ -3,5 +3,3 @@
 using GardenManager;
 
 Manager manager = new Manager();
-
-Console.WriteLine("Hello, World!");

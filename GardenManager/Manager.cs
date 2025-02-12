@@ -1,6 +1,6 @@
 using GardenManager.Enums;
 using GardenManager.Model;
-using System.Text.Json;
+using Newtonsoft.Json;
 using GardenManager.Utility;
 
 namespace GardenManager;
@@ -35,7 +35,7 @@ public class Manager
             {
                 CD.DisplayMainMenu(CurrentUser);
                 string? input = Console.ReadLine();
-                while (!InputValidator.ValidateEntryWithRegex(input!, @"^[0-3]$"))
+                while (!InputValidator.ValidateEntryWithRegex(input!, @"^[1-4]$"))
                 {
                     Console.Write("Invalid entry. Try again: ");
                     input = Console.ReadLine();
@@ -43,16 +43,16 @@ public class Manager
 
                 switch (input)
                 {
-                    case "0":
+                    case "1":
                         HandleUserSelection();
                         break;
-                    case "1":
+                    case "2":
                         HandlePlantManagement();
                         break;
-                    case "2":
+                    case "3":
                         HandleGardenManagement();
                         break;
-                    case "3":
+                    case "4":
                         inMainMenu = false;
                         break;
                 }
@@ -82,6 +82,8 @@ public class Manager
             Users.Add(user);
             SaveUsersToFile();
         }
+
+        CurrentUser = user;
     }
 
     private User HandleUserCreation()
@@ -151,12 +153,73 @@ public class Manager
 
     private void HandlePlantModification(Plant plant)
     {
-        
+        Console.WriteLine($"Selected plant: {plant.Name}");
+        Console.Write("Enter the new plant name: ");
+        string? name = Console.ReadLine();
+        CD.DisplayEssenceListing();
+        Console.Write("Enter the new plant Essence: ");
+        string? essence = Console.ReadLine();
+        while (!InputValidator.ValidateEntryWithRegex(essence!, @"^[0-7]{1}$"))
+        {
+            Console.Write("Invalid entry, Try again: ");
+            essence = Console.ReadLine();
+        }
+        Essence actualEssence = (Essence)int.Parse(essence!);
+        CD.DisplayGenusListing();
+        Console.Write("Enter the new plant genus: ");
+        string? genus = Console.ReadLine();
+        while (!InputValidator.ValidateEntryWithRegex(genus!, @"^[0-3]{1}$"))
+        {
+            Console.Write("Invalid entry, Try again: ");
+            genus = Console.ReadLine();
+        }
+        Genus actualGenus = (Genus)int.Parse(genus!);
+        List<Effect> effects = new List<Effect>();
+        for (int i = 0; i < 4; i++)
+        {
+            CD.DisplayEffectListing();
+            Console.Write($"Enter the new plant effect number {i + 1}: ");
+            string? effect = Console.ReadLine();
+            while (!InputValidator.ValidateEntryWithRegex(effect!, @"^[0-9]{1,2}$"))
+            {
+                Console.Write("Invalid entry, Try again: ");
+                effect = Console.ReadLine();
+            }
+            effects.Add((Effect)int.Parse(effect));
+        }
+        plant.Name = name!;
+        plant.Essence = actualEssence;
+        plant.Genus = actualGenus;
+        plant.Effects = effects;
     }
     
     private void HandleGardenManagement()
     {
-        
+        CD.DisplayGardenSelection(Gardens.Count);
+        Console.Write("Select a garden: ");
+        string? selection = Console.ReadLine();
+        if (!InputValidator.ValidateEntryWithRegex(selection!, @$"^[0-{Gardens.Count}]{{1}}$"))
+        {
+            Console.Write("Invalid entry, Try again: ");
+            selection = Console.ReadLine();
+        }
+        int gardenId = int.Parse(selection!);
+        Garden? garden = Gardens.FirstOrDefault(x => x.Id == gardenId);
+        if (garden == null)
+        {
+            garden = HandleGardenCreation();
+            Gardens.Add(garden);
+            SaveGardensToFile();
+        }
+    }
+
+    private Garden HandleGardenCreation()
+    {
+        Garden garden = new Garden();
+        garden.Id = Gardens.Count;
+        garden.WeatherEffect = WeatherEffects.Cloudy;
+        garden.Init(Plants);
+        return garden;
     }
     
     private void Init()
@@ -172,8 +235,16 @@ public class Manager
             LoadPlantsFromFile();
         }
 
-        LoadGardensFromFile();
-        LoadUsersFromFile();
+        if (File.Exists(JsonGardens))
+        {
+            LoadGardensFromFile();
+        }
+
+        if (File.Exists(JsonUsers))
+        {
+            LoadUsersFromFile();
+        }
+        
     }
     
     private void InitPlantsBase()
@@ -363,20 +434,20 @@ public class Manager
 
     private void SavePlantsToFile()
     {
-        string jsonString = JsonSerializer.Serialize(Plants);
+        string jsonString = JsonConvert.SerializeObject(Plants);
         File.WriteAllText(JsonPlants, jsonString);
     }
 
     private void LoadPlantsFromFile()
     {
         string jsonString = File.ReadAllText(JsonPlants);
-        Plants = JsonSerializer.Deserialize<List<Plant>>(jsonString)!;
+        Plants = JsonConvert.DeserializeObject<List<Plant>>(jsonString)!;
     }
 
     private void LoadUsersFromFile()
     {
         string jsonString = File.ReadAllText(JsonUsers);
-        List<User>? tempUsers = JsonSerializer.Deserialize<List<User>>(jsonString);
+        List<User>? tempUsers = JsonConvert.DeserializeObject<List<User>>(jsonString);
         if (tempUsers != null)
         {
             Users = tempUsers;
@@ -386,10 +457,10 @@ public class Manager
     private void LoadGardensFromFile()
     {
         string jsonString = File.ReadAllText(JsonGardens);
-        List<Garden>? TempGardens = JsonSerializer.Deserialize<List<Garden>>(jsonString);
-        if (TempGardens != null)
+        List<Garden>? tempGardens = JsonConvert.DeserializeObject<List<Garden>>(jsonString);
+        if (tempGardens != null)
         {
-            Gardens = TempGardens;
+            Gardens = tempGardens;
         }
     }
 
@@ -401,7 +472,13 @@ public class Manager
 
     private void SaveUsersToFile()
     {
-        string jsonString = JsonSerializer.Serialize(Users);
+        string jsonString = JsonConvert.SerializeObject(Users);
         File.WriteAllText(JsonUsers, jsonString);
+    }
+
+    private void SaveGardensToFile()
+    {
+        string jsonString = JsonConvert.SerializeObject(Gardens);
+        File.WriteAllText(JsonGardens, jsonString);
     }
 }

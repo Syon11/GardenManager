@@ -56,6 +56,78 @@ public class ConsoleDisplay
         }
     }
 
+    public void DisplayEssenceListing()
+    {
+        Console.WriteLine("Essences: ");
+        Console.WriteLine("0) Feu");
+        Console.WriteLine("1) Foudre");
+        Console.WriteLine("2) Glace");
+        Console.WriteLine("3) Acide");
+        Console.WriteLine("4) Vie");
+        Console.WriteLine("5) Mort");
+        Console.WriteLine("6) Soleil");
+        Console.WriteLine("7) Lune");
+    }
+
+    public void DisplayGenusListing()
+    {
+        Console.WriteLine("Genus types: ");
+        Console.WriteLine("0) Invasive");
+        Console.WriteLine("1) Bulbe");
+        Console.WriteLine("2) Grimpante");
+        Console.WriteLine("3) Communicante");
+    }
+
+    public void DisplayEffectListing()
+    {
+        Console.WriteLine("0) Flux");	
+        Console.WriteLine("1) Graisseux"); 	
+        Console.WriteLine("2) Huileux");
+        Console.WriteLine("3) Naphta");
+        Console.WriteLine("4) Antidouleur");
+        Console.WriteLine("5) Antitoxine");
+        Console.WriteLine("6) Antimagie");
+        Console.WriteLine("7) Argent_Alchimique");
+        Console.WriteLine("8) Armure_Naturelle");
+        Console.WriteLine("9) Calme");
+        Console.WriteLine("10) Celerite");
+        Console.WriteLine("11) Charisme");
+        Console.WriteLine("12) Concentration");
+        Console.WriteLine("13) Contre_Poison");
+        Console.WriteLine("14) Corps_Epineux");
+        Console.WriteLine("15) Decoposition");
+        Console.WriteLine("16) Extrait_Abjuration");
+        Console.WriteLine("17) Extrait_Evocation");
+        Console.WriteLine("18) Extrait_Illusion");
+        Console.WriteLine("19) Extrait_Enchantement");
+        Console.WriteLine("20) Extrait_Conjuration");
+        Console.WriteLine("21) Extrait_Divination");
+        Console.WriteLine("22) Extrait_Nécromancie");
+        Console.WriteLine("23) Faiblesse");
+        Console.WriteLine("24) Force");
+        Console.WriteLine("25) Terre");
+        Console.WriteLine("26) Feu");
+        Console.WriteLine("27) Foudre");
+        Console.WriteLine("28) Glace");
+        Console.WriteLine("29) Insomnie");
+        Console.WriteLine("30) Invisibilite");
+        Console.WriteLine("31) Mana");
+        Console.WriteLine("32) Mensonge");
+        Console.WriteLine("33) Paralysie");
+        Console.WriteLine("34) Charme");
+        Console.WriteLine("35) Peur");
+        Console.WriteLine("36) Poison");
+        Console.WriteLine("37) Polymorphe");
+        Console.WriteLine("38) Rage");	
+        Console.WriteLine("39) Remede");	
+        Console.WriteLine("40) Soin");
+        Console.WriteLine("41) Sommeil");
+        Console.WriteLine("42) Stabilisant");	
+        Console.WriteLine("43) Stimulant");	
+        Console.WriteLine("44) Vitalite"); 	
+        Console.WriteLine("45) Vivifiant");	
+        Console.WriteLine("46) Silence");
+    }
     public void DisplayPlantSelection()
     {
         Console.Write("Please select a plant by ID: ");
