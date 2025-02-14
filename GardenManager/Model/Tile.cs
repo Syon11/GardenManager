@@ -8,10 +8,12 @@ public class Tile
     public Plant? Plant { get; set; }
     public Essence? Essence_Override { get; set; }
     public User? Owner { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
     
     public Tile(){}
     
-    public Tile(List<Plant> plants)
+    public Tile(List<Plant> plants, int x, int y)
     {
         Random rnd = new Random();
         int rng = rnd.Next(0, 100);
@@ -19,10 +21,12 @@ public class Tile
             Plant = null;
         else if (rng < 80)
             Plant = plants[0];
-        else 
+        else
             Plant = plants[rnd.Next(0, plants.Count)];
         Essence_Override = null;
         Owner = null;
+        X = x;
+        Y = y;
     }
 
     public Tile(Plant? plant, Essence? essence, User? owner)
@@ -44,5 +48,10 @@ public class Tile
     public void ChangeOwner(User owner)
     {
         Owner = owner;
+    }
+
+    public void grow()
+    {
+        
     }
 }

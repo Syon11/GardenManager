@@ -35,7 +35,7 @@ public class Manager
             {
                 CD.DisplayMainMenu(CurrentUser);
                 string? input = Console.ReadLine();
-                while (!InputValidator.ValidateEntryWithRegex(input!, @"^[1-4]$"))
+                while (string.IsNullOrEmpty(input) || !InputValidator.ValidateEntryWithRegex(input!, @"^[1-4]$"))
                 {
                     Console.Write("Invalid entry. Try again: ");
                     input = Console.ReadLine();
@@ -57,11 +57,8 @@ public class Manager
                         break;
                 }
             }
-            
-                
             running = false;
         }
-        
         TerminateProgram();
     }
 
@@ -69,7 +66,7 @@ public class Manager
     {
         CD.DisplayUserSelection(Users);
         string? input = Console.ReadLine();
-        while (!InputValidator.ValidateEntryWithRegex(input!, @"^[0-9]{1,3}$"))
+        while (string.IsNullOrEmpty(input) || !InputValidator.ValidateEntryWithRegex(input!, @"^[0-9]{1,3}$"))
         {
             Console.Write("Invalid entry. Try again: ");
             input = Console.ReadLine();
@@ -91,7 +88,7 @@ public class Manager
         int id = Users.Count;
         CD.DisplayUserCreation();
         string? name = Console.ReadLine();
-        while (!InputValidator.ValidateEntryWithRegex(name, @"^\w{1,80}$"))
+        while (string.IsNullOrEmpty(name) || !InputValidator.ValidateEntryWithRegex(name, @"^\w{1,80}$"))
         {
             Console.Write("Invalid entry, Try again: ");
             name = Console.ReadLine();
@@ -110,7 +107,7 @@ public class Manager
         while (inPlantManagement){
             CD.DisplayPlantManagement();
             string? input = Console.ReadLine();
-            while (!InputValidator.ValidateEntryWithRegex(input!, @"^[1-2]{1}$"))
+            while (string.IsNullOrEmpty(input) || (!InputValidator.ValidateEntryWithRegex(input!, @"^[1-2]{1}$")))
             {
                 Console.Write("Invalid entry, Try again: ");
                 input = Console.ReadLine();
@@ -120,7 +117,7 @@ public class Manager
             {
                 case "1":
                     Plant selection = HandlePlantSelection();
-                    HandlePlantModification(selection);
+                    selection.Modify(CD);
                     break;
                 case "2": 
                     inPlantManagement = false;
@@ -138,7 +135,7 @@ public class Manager
             CD.DisplayPlantSelection();
             string? input = Console.ReadLine();
 
-            while (!InputValidator.ValidateEntryWithRegex(input!, @"^[0-9]{1,3}$"))
+            while (string.IsNullOrEmpty(input) || !InputValidator.ValidateEntryWithRegex(input!, @"^[0-9]{1,3}$"))
             {
                 Console.Write("Invalid entry, Try again: ");
                 input = Console.ReadLine();
@@ -150,55 +147,12 @@ public class Manager
         }
         return plant;
     }
-
-    private void HandlePlantModification(Plant plant)
-    {
-        Console.WriteLine($"Selected plant: {plant.Name}");
-        Console.Write("Enter the new plant name: ");
-        string? name = Console.ReadLine();
-        CD.DisplayEssenceListing();
-        Console.Write("Enter the new plant Essence: ");
-        string? essence = Console.ReadLine();
-        while (!InputValidator.ValidateEntryWithRegex(essence!, @"^[0-7]{1}$"))
-        {
-            Console.Write("Invalid entry, Try again: ");
-            essence = Console.ReadLine();
-        }
-        Essence actualEssence = (Essence)int.Parse(essence!);
-        CD.DisplayGenusListing();
-        Console.Write("Enter the new plant genus: ");
-        string? genus = Console.ReadLine();
-        while (!InputValidator.ValidateEntryWithRegex(genus!, @"^[0-3]{1}$"))
-        {
-            Console.Write("Invalid entry, Try again: ");
-            genus = Console.ReadLine();
-        }
-        Genus actualGenus = (Genus)int.Parse(genus!);
-        List<Effect> effects = new List<Effect>();
-        for (int i = 0; i < 4; i++)
-        {
-            CD.DisplayEffectListing();
-            Console.Write($"Enter the new plant effect number {i + 1}: ");
-            string? effect = Console.ReadLine();
-            while (!InputValidator.ValidateEntryWithRegex(effect!, @"^[0-9]{1,2}$"))
-            {
-                Console.Write("Invalid entry, Try again: ");
-                effect = Console.ReadLine();
-            }
-            effects.Add((Effect)int.Parse(effect));
-        }
-        plant.Name = name!;
-        plant.Essence = actualEssence;
-        plant.Genus = actualGenus;
-        plant.Effects = effects;
-    }
     
     private void HandleGardenManagement()
     {
         CD.DisplayGardenSelection(Gardens.Count);
-        Console.Write("Select a garden: ");
         string? selection = Console.ReadLine();
-        if (!InputValidator.ValidateEntryWithRegex(selection!, @$"^[0-{Gardens.Count}]{{1}}$"))
+        if (string.IsNullOrEmpty(selection) || !InputValidator.ValidateEntryWithRegex(selection!, @$"^[0-{Gardens.Count}]{{1}}$"))
         {
             Console.Write("Invalid entry, Try again: ");
             selection = Console.ReadLine();
@@ -211,8 +165,19 @@ public class Manager
             Gardens.Add(garden);
             SaveGardensToFile();
         }
-    }
 
+        if (CurrentUser != null)
+        {
+            garden.Handle(CD, Plants, CurrentUser);
+            SaveGardensToFile();
+        }
+        else
+        {
+            Console.WriteLine("To manage a specific garden please select a user from the main menu");
+        }
+    }
+    
+    
     private Garden HandleGardenCreation()
     {
         Garden garden = new Garden();
@@ -234,17 +199,14 @@ public class Manager
         {
             LoadPlantsFromFile();
         }
-
         if (File.Exists(JsonGardens))
         {
             LoadGardensFromFile();
         }
-
         if (File.Exists(JsonUsers))
         {
             LoadUsersFromFile();
         }
-        
     }
     
     private void InitPlantsBase()

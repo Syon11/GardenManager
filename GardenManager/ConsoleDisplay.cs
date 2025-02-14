@@ -1,3 +1,4 @@
+using GardenManager.Enums;
 using GardenManager.Model;
 using GardenManager.Utility;
 
@@ -145,42 +146,95 @@ public class ConsoleDisplay
     
     
     
-    public void DisplayGardenGrid()
+    public void DisplayGardenGrid(Garden garden)
     {
         
-        DisplayGardenHeader(4);
-        DisplayGardenCore();
+        DisplayGardenHeader(garden.Tiles[0].Count);
+        DisplayGardenCore(garden);
         DisplayGardenFooter();
     }
 
     private void DisplayGardenHeader(int size)
     {
-        Console.Write("   |");
+        ConsoleHelper.SetBackgroundColorToBlack();
+        Console.Write("  |");
         
         for (int i = 0; i < size; i++)
         {
             Console.Write($" {i} |");
-            Console.WriteLine("");
+            
         }
+        Console.WriteLine("");
     }
 
     private void DisplayGardenFooter()
     {
         Console.WriteLine();
-        Console.WriteLine("Please enter a command using this format: [Action][X][Y]");
+        Console.WriteLine("Please enter a command using this format: [Action][Y][X]");
         Console.WriteLine("Possible actions:");
+        Console.WriteLine("0) Purchase a plot");
         Console.WriteLine("1) Plant a seed");
         Console.WriteLine("2) Harvest");
         Console.WriteLine("3) Use fertilizer");
         Console.WriteLine("4) Add a row");
         Console.WriteLine("5) Add a column");
         Console.WriteLine("6) Trigger weather effect");
-        Console.WriteLine("7) Cancel");
+        Console.WriteLine("7) End turn");
+        Console.WriteLine("8) Examine Plot");
+        Console.WriteLine("9) Cancel");
         Console.Write("Select action: ");
     }
 
-    private void DisplayGardenCore()
+    private void DisplayGardenCore(Garden garden)
     {
+        for (int i = 0; i < garden.Tiles.Count; i++)
+        {
+            Console.Write($"{i} |");
+            for (int j = 0; j < garden.Tiles[i].Count; j++)
+            {
+                if (garden.Tiles[i][j].Plant != null)
+                {
+                    switch (garden.Tiles[i][j].Plant!.Essence)
+                    {
+                        case Essence.Feu:
+                            ConsoleHelper.SetBackgroundColorToDarkRed();
+                            break;
+                        case Essence.Foudre:
+                            ConsoleHelper.SetBackgroundColorToDarkYellow();
+                            break;
+                        case Essence.Glace:
+                            ConsoleHelper.SetBackgroundColorToDarkBlue();
+                            break;
+                        case Essence.Acide:
+                            ConsoleHelper.SetBackgroundColorToDarkGreen();
+                            break;
+                        case Essence.Vie:
+                            ConsoleHelper.SetBackgroundColorToDarkCyan();
+                            break;
+                        case Essence.Mort:
+                            ConsoleHelper.SetBackgroundColorToDarkMagenta();
+                            break;
+                        case Essence.Soleil:
+                            ConsoleHelper.SetBackgroundColorToYellow();
+                            break;
+                        case Essence.Lune:
+                            ConsoleHelper.SetBackgroundColorToGray();
+                            break;
+                    }
+                }
+                if (garden.Tiles[i][j].Owner != null)
+                {
+                    Console.Write($" {garden.Tiles[i][j].Owner!.Name[0]} ");    
+                }
+                else
+                {
+                    Console.Write("   ");
+                }
+                ConsoleHelper.SetBackgroundColorToBlack();
+                Console.Write("|");
+            }
+            Console.WriteLine();
+        }
         
     }
 }
