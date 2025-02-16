@@ -20,7 +20,12 @@ public class Tile
         if (rng < 50)
             Plant = null;
         else if (rng < 80)
-            Plant = plants[0];
+        {
+            int rndEssence = rnd.Next(0, 8);
+            int rndGenus = rnd.Next(0, 4);
+            Plant = GenerateWeed();
+        }
+            
         else
             Plant = plants[rnd.Next(0, plants.Count)];
         Essence_Override = null;
@@ -50,8 +55,11 @@ public class Tile
         Owner = owner;
     }
 
-    public void grow()
+    public Plant GenerateWeed()
     {
-        
+        Random rnd = new Random();
+        int rndEssence = rnd.Next(0, 8);
+        int rndGenus = rnd.Next(0, 4);
+        return new Plant(96, "Mauvaise herbe", (Essence)rndEssence, (Genus)rndGenus, new List<Effect>(), SecondaryEffect.Toxique);
     }
 }

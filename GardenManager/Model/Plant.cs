@@ -1,11 +1,12 @@
 using System.Numerics;
 using System.Text.Json.Serialization;
 using GardenManager.Enums;
+using GardenManager.Interfaces;
 using GardenManager.Utility;
 
 namespace GardenManager.Model;
 
-public class Plant
+public class Plant : IAlchemizable
 {
     private const int EssenceSame = 25;
     private const int EssenceDifferent = 0;
@@ -21,7 +22,7 @@ public class Plant
     public string Name { get; set; }
     public Essence Essence { get; set; }
     public Genus Genus { get; set; }
-    public List<Effect> Effects { get; set; }
+    public List<Effect> AlchemicalEffects { get; set; }
     public SecondaryEffect SecondaryEffect { get; set; }
     public int growthTime { get; set; }
     public int currentGrowth { get; set; }
@@ -30,13 +31,13 @@ public class Plant
     
     public Plant(){}
     
-    public Plant(long Id, string Name, Essence Essence, Genus Genus, List<Effect> Effects, SecondaryEffect SecondaryEffect)
+    public Plant(long Id, string Name, Essence Essence, Genus Genus, List<Effect> alchemicalEffects, SecondaryEffect SecondaryEffect)
     {
         this.Id = Id;
         this.Name = Name;
         this.Essence = Essence;
         this.Genus = Genus;
-        this.Effects = Effects;
+        this.AlchemicalEffects = alchemicalEffects;
         this.SecondaryEffect = SecondaryEffect;
 
         Random random = new Random();
@@ -50,7 +51,7 @@ public class Plant
         Name = name;
         Essence = essence;
         Genus = genus;
-        Effects = [];
+        AlchemicalEffects = [];
         SecondaryEffect = SecondaryEffect.Aucun;
         
         Random random = new Random();
@@ -64,7 +65,7 @@ public class Plant
         Name = plant.Name;
         Essence = plant.Essence;
         Genus = plant.Genus;
-        Effects = plant.Effects;
+        AlchemicalEffects = plant.AlchemicalEffects;
         SecondaryEffect = plant.SecondaryEffect;
         growthTime = plant.growthTime;
         currentGrowth = 0;
@@ -109,9 +110,15 @@ public class Plant
         Name = name!;
         Essence = actualEssence;
         Genus = actualGenus;
-        Effects = effects;
+        AlchemicalEffects = effects;
     }
 
+    public void Grow()
+    {
+        if (currentGrowth < growthTime)
+            currentGrowth++;
+    }
+    
     public void Propagate(Garden garden, int y, int x, int maxY, int maxX, Plant? originator = null)
     {
         if (!hasPropagated)
@@ -420,5 +427,18 @@ public class Plant
                 break;
         }
         return 0;
+    }
+
+    public void ModifyName()
+    {
+        Console.Write("Please enter a new name for the plant: ");
+        string? newName = Console.ReadLine();
+        while (string.IsNullOrEmpty(newName) || !InputValidator.ValidateEntryWithRegex(newName, @"^\w{4,80}$"))
+        {
+            Console.Write("Invalid name, Please try again: ");
+            newName = Console.ReadLine();
+        }
+
+        Name = newName;
     }
 }

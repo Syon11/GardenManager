@@ -44,31 +44,31 @@ public class Garden
             switch (action![0])
             {
                 case('0'):
-                    PurchasePlot(user, action);
+                    ExaminePlot(action);
                     break;
                 case('1'):
-                    HandlePlanting(user, CD, plants, action);
+                    PurchasePlot(user, action);
                     break;
                 case('2'):
-                    HandleHarvest(user, action);
+                    HandlePlanting(user, CD, plants, action);
                     break;
                 case('3'):
-                    HandleFertilizing(user, action);
+                    HandleHarvest(user, action);
                     break;
                 case('4'):
-                    GrowRow();
+                    HandleFertilizing(user, action);
                     break;
                 case('5'):
-                    GrowCol();
+                    GrowRow();
                     break;
                 case('6'):
-                    ChangeWeather();
+                    GrowCol();
                     break;
                 case('7'):
-                    EndTurn();
+                    ChangeWeather();
                     break;
                 case('8'):
-                    ExaminePlot(action);
+                    EndTurn(CD);
                     break;
                 case('9'):
                     inMenu = false;
@@ -261,83 +261,117 @@ public class Garden
         
     }
 
-    private void EndTurn()
+    private void EndTurn(ConsoleDisplay CD)
     {
-        Random rnd = new Random();
-        Genus firstType = (Genus)rnd.Next(0, 3);
-        Genus secondType;
-        do
+        CD.DisplayConfirmation();
+        string conf = Console.ReadLine();
+        if (string.IsNullOrEmpty(conf) || !InputValidator.ValidateEntryWithRegex(conf, "^y|n|Y|N{1}$"))
         {
-            secondType = (Genus)rnd.Next(0, 3);
-        } while (secondType == firstType);
+            Console.Write("Invalid input, please try again: ");
+            conf = Console.ReadLine();
+        }
 
-        Genus thirdType;
-        do
+        if (conf!.Equals("y") || conf!.Equals("Y"))
         {
-            thirdType = (Genus)rnd.Next(0, 3);
-        } while (thirdType == firstType || thirdType == secondType);
-
-
-        for (int i = 0; i < Tiles.Count; i++)
-        {
-            for (int j = 0; j < Tiles[i].Count; j++)
+            Random rnd = new Random();
+            Genus firstType = (Genus)rnd.Next(0, 3);
+            Genus secondType;
+            do
             {
-                if (Tiles[i][j].Plant != null)
-                {
-                    if (Tiles[i][j].Plant!.Genus == firstType)
-                    {
-                        Tiles[i][j].Plant!.Propagate(this, i, j, Tiles.Count, Tiles[i].Count);
-                        ResetPropagation();
-                        Tiles[i][j].Plant!.currentGrowth++;
-                    }
+                secondType = (Genus)rnd.Next(0, 3);
+            } while (secondType == firstType);
 
-                    if (Tiles[i][j].Plant!.Genus == Genus.Communicante)
+            Genus thirdType;
+            do
+            {
+                thirdType = (Genus)rnd.Next(0, 3);
+            } while (thirdType == firstType || thirdType == secondType);
+
+
+            for (int i = 0; i < Tiles.Count; i++)
+            {
+                for (int j = 0; j < Tiles[i].Count; j++)
+                {
+                    if (Tiles[i][j].Plant != null)
                     {
-                        Tiles[i][j].Plant!.currentGrowth++;
+                        if (Tiles[i][j].Plant!.Genus == firstType)
+                        {
+                            Tiles[i][j].Plant!.Propagate(this, i, j, Tiles.Count, Tiles[i].Count);
+                            ResetPropagation();
+                            Tiles[i][j].Plant!.currentGrowth++;
+                        }
+
+                        if (Tiles[i][j].Plant!.Genus == Genus.Communicante)
+                        {
+                            Tiles[i][j].Plant!.Grow();
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < Tiles.Count; i++)
+            {
+                for (int j = 0; j < Tiles[i].Count; j++)
+                {
+                    if (Tiles[i][j].Plant != null)
+                    {
+                        if (Tiles[i][j].Plant!.Genus == secondType)
+                        {
+                            Tiles[i][j].Plant!.Propagate(this, i, j, Tiles.Count, Tiles[i].Count);
+                            ResetPropagation();
+                            Tiles[i][j].Plant!.Grow();
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < Tiles.Count; i++)
+            {
+                for (int j = 0; j < Tiles[i].Count; j++)
+                {
+                    if (Tiles[i][j].Plant != null)
+                    {
+                        if (Tiles[i][j].Plant!.Genus == thirdType)
+                        {
+                            Tiles[i][j].Plant!.Propagate(this, i, j, Tiles.Count, Tiles[i].Count);
+                            ResetPropagation();
+                            Tiles[i][j].Plant!.Grow();
+                        }
+                    }
+                }
+            }    
+            
+            for (int i = 0; i < Tiles.Count; i++)
+            {
+                for (int j = 0; j < Tiles[i].Count; j++)
+                {
+                    int infestationChance = rnd.Next(0, 5);
+                    if (infestationChance == 0){
+                        if (i == 0 || j == 0 || i == Tiles.Count - 1 || j == Tiles.Count - 1)
+                        {
+                            Tiles[i][j].Plant = Tiles[i][j].GenerateWeed();
+                        }
+                        else if (Tiles[i + 1][j].Plant != null && Tiles[i + 1][j].Plant!.Id == 96)
+                        {
+                            Tiles[i][j].Plant = new Plant(Tiles[i + 1][j].Plant!);
+                        }
+                        else if (Tiles[i - 1][j].Plant != null && Tiles[i - 1][j].Plant!.Id == 96)
+                        {
+                            Tiles[i][j].Plant = new Plant(Tiles[i - 1][j].Plant!);
+                        }
+                        else if (Tiles[i][j + 1].Plant != null && Tiles[i][j + 1].Plant!.Id == 96)
+                        {
+                            Tiles[i][j].Plant = new Plant(Tiles[i][j + 1].Plant!);
+                        }
+                        else if (Tiles[i][j - 1].Plant != null && Tiles[i][j - 1].Plant!.Id == 96)
+                        {
+                            Tiles[i][j].Plant = new Plant(Tiles[i][j - 1].Plant!);
+                        }
                     }
                 }
             }
         }
-        for (int i = 0; i < Tiles.Count; i++)
-        {
-            for (int j = 0; j < Tiles[i].Count; j++)
-            {
-                if (Tiles[i][j].Plant != null)
-                {
-                    if (Tiles[i][j].Plant!.Genus == secondType)
-                    {
-                        Tiles[i][j].Plant!.Propagate(this, i, j, Tiles.Count, Tiles[i].Count);
-                        ResetPropagation();
-                        Tiles[i][j].Plant!.currentGrowth++;
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < Tiles.Count; i++)
-        {
-            for (int j = 0; j < Tiles[i].Count; j++)
-            {
-                if (Tiles[i][j].Plant != null)
-                {
-                    if (Tiles[i][j].Plant!.Genus == thirdType)
-                    {
-                        Tiles[i][j].Plant!.Propagate(this, i, j, Tiles.Count, Tiles[i].Count);
-                        ResetPropagation();
-                        Tiles[i][j].Plant!.currentGrowth++;
-                    }
-                }
-            }
-        }
-        
-        // OUTLINE:
-        // Determine first, second and third plant type
-        // Act fist plant type invasions
-        // Act 2nd plant type invasions
-        // Act 3rd plant type invations
-        // Act weeds invations
+
         // Act edge infestations
         // Act Weather effect
-
     }
 
     private void ResetPropagation()

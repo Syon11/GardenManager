@@ -8,6 +8,7 @@ namespace GardenManager;
 public class Manager
 {
     private List<Plant> Plants { get; set; }
+    private List<Ore> Ores { get; set; }
     private List<User> Users { get; set; }
     private List<Garden> Gardens { get; set; }
     private User? CurrentUser { get; set; }
@@ -15,10 +16,12 @@ public class Manager
     private const string JsonPlants = "plants.json";
     private const string JsonUsers = "users.json";
     private const string JsonGardens = "gardens.json";
-    
+    private const string JsonOres = "ores.json";
+
     public Manager()
     {
         Plants = [];
+        Ores = [];
         Users = [];
         Gardens = [];
         Init();
@@ -35,7 +38,7 @@ public class Manager
             {
                 CD.DisplayMainMenu(CurrentUser);
                 string? input = Console.ReadLine();
-                while (string.IsNullOrEmpty(input) || !InputValidator.ValidateEntryWithRegex(input!, @"^[1-4]$"))
+                while (string.IsNullOrEmpty(input) || !InputValidator.ValidateEntryWithRegex(input!, @"^[1-5]$"))
                 {
                     Console.Write("Invalid entry. Try again: ");
                     input = Console.ReadLine();
@@ -53,6 +56,9 @@ public class Manager
                         HandleGardenManagement();
                         break;
                     case "4":
+                        ConcoctPotion();
+                        break;
+                    case "5":
                         inMainMenu = false;
                         break;
                 }
@@ -99,6 +105,12 @@ public class Manager
         user.Name = name;
         return user;
     }
+
+    private void ConcoctPotion()
+    {
+        PotionBuilder builder = new PotionBuilder(Plants, Ores);
+
+    }
     
     private void HandlePlantManagement()
     {
@@ -107,19 +119,25 @@ public class Manager
         while (inPlantManagement){
             CD.DisplayPlantManagement();
             string? input = Console.ReadLine();
-            while (string.IsNullOrEmpty(input) || (!InputValidator.ValidateEntryWithRegex(input!, @"^[1-2]{1}$")))
+            while (string.IsNullOrEmpty(input) || (!InputValidator.ValidateEntryWithRegex(input!, @"^[1-3]{1}$")))
             {
                 Console.Write("Invalid entry, Try again: ");
                 input = Console.ReadLine();
             }
-
+            
+            
+            
             switch (input)
             {
                 case "1":
                     Plant selection = HandlePlantSelection();
                     selection.Modify(CD);
                     break;
-                case "2": 
+                case "2":
+                    Plant selection2 = HandlePlantSelection();
+                    selection2.ModifyName();
+                    break;        
+                case "3": 
                     inPlantManagement = false;
                     break;
             }
@@ -206,6 +224,16 @@ public class Manager
         if (File.Exists(JsonUsers))
         {
             LoadUsersFromFile();
+        }
+
+        if (!File.Exists(JsonOres))
+        {
+            InitOres();
+            SaveOresToFile();
+        }
+        else
+        {
+            LoadOresFromFile();
         }
     }
     
@@ -312,11 +340,41 @@ public class Manager
         ];
     }
 
+    private void InitOres()
+    {
+        Ores =
+        [
+            new Ore("Fer", "Du fer", [], Essence.Acide, 1, 1, true),
+            new Ore("Charbon", "Du charbon", [], Essence.Acide, 1, 1, true),
+            new Ore("Cuivre", "Du cuivre", [], Essence.Acide, 1, 1, true),
+            new Ore("Plomb", "Du plomb", [], Essence.Acide, 1, 2, true),
+            new Ore("Étain", "De l'étain", [], Essence.Acide, 1, 2, true),
+            new Ore("Argent", "De l'argent", [], Essence.Acide, 2, 2, true),
+            new Ore("Bismuth", "Du bismuth", [], Essence.Acide, 2, 0, true),
+            new Ore("Acier", "Du l'acier", [], Essence.Acide, 0, 3, false),
+            new Ore("Bronze", "Du bronze", [], Essence.Acide, 0, 3, false),
+            new Ore("Or", "De l'or", [], Essence.Acide, 2, 3, true),
+            new Ore("Cobalt", "Du cobalt", [], Essence.Acide, 2, 3, true),
+            new Ore("Acier Froid", "Du l'acier froid", [], Essence.Acide, 0, 4, false),
+            new Ore("Acier Noir", "Du l'acier noir", [], Essence.Acide, 0, 4, false),
+            new Ore("Ferreux", "Du ferreux", [], Essence.Acide, 3, 4, true),
+            new Ore("Obsidienne", "De l'obsidienne", [], Essence.Acide, 3, 4, true),
+            new Ore("Argent Sterling", "De l'argent sterling", [], Essence.Acide, 0, 4, false),
+            new Ore("Électrum", "Du l'électrum", [], Essence.Acide, 0, 4, false),
+            new Ore("Larme Lunaire", "Une larme lunaire", [], Essence.Acide, 3, 4, true),
+            new Ore("Or Rose", "De l'or rose", [], Essence.Acide, 0, 4, false),
+            new Ore("Adamantium", "De l'adamantium", [], Essence.Acide, 0, 5, false),
+            new Ore("Mithril", "Du mithril", [], Essence.Acide, 0, 5, false),
+            new Ore("Orichalcum", "De l'orichalcum", [], Essence.Acide, 0, 5, false)
+        ];
+    }
+
     private void RandomizeEffects()
     {
+        Console.WriteLine("Randomizing Plants");
         const int effectsPerPlant = 4;
         int plantsCount = Plants.Count;
-        List<int> effectsNumbers = [];
+        
         int baseNumber;
         int inequality;
         int numberOfEffects = Enum.GetNames(typeof(Effect)).Length;
@@ -324,17 +382,20 @@ public class Manager
         bool goodDistribution1 = false;
         Random random = new Random();
         
-        baseNumber = (plantsCount * effectsPerPlant) / numberOfEffects;
-        inequality = (plantsCount * effectsPerPlant) % numberOfEffects;
 
-        for (int i = 0; i < numberOfEffects; i++)
-        {
-            effectsNumbers.Add(i <= inequality ? baseNumber + 1 : baseNumber);
-        }
 
         while (!goodDistribution1)
         {
             goodDistribution1 = true;
+            baseNumber = (plantsCount * effectsPerPlant) / numberOfEffects;
+            inequality = (plantsCount * effectsPerPlant) % numberOfEffects;
+
+            List<int> effectsNumbers = [];
+            for (int i = 0; i < numberOfEffects; i++)
+            {
+                effectsNumbers.Add(i <= inequality ? baseNumber + 1 : baseNumber);
+            }
+            
             for (int i = 0; i < plantsCount; i++)
             {
                 List<int> numbers = Enumerable.Range(0, numberOfEffects).ToList();
@@ -351,9 +412,11 @@ public class Manager
                 effectsNumbers[numbers[1]]--;
                 effectsNumbers[numbers[2]]--;
                 effectsNumbers[numbers[3]]--;
-                Plants[i].Effects = effects;
+                Plants[i].AlchemicalEffects = effects;
             }
         }
+        
+        Console.WriteLine("Good good distribution");
 
         foreach (Plant plant in Plants)
         {
@@ -362,7 +425,7 @@ public class Manager
 
         foreach (var plant in Plants)
         {
-            Console.WriteLine(plant.Effects);
+            Console.WriteLine(plant.AlchemicalEffects);
         }
     }
 
@@ -426,6 +489,16 @@ public class Manager
         }
     }
 
+    private void LoadOresFromFile()
+    {
+        string jsonString = File.ReadAllText(JsonOres);
+        List<Ore>? tempOres = JsonConvert.DeserializeObject<List<Ore>>(jsonString);
+        if (tempOres != null)
+        {
+            Ores = tempOres;
+        }
+    }
+    
     private void TerminateProgram()
     {
         SaveUsersToFile();
@@ -442,5 +515,11 @@ public class Manager
     {
         string jsonString = JsonConvert.SerializeObject(Gardens);
         File.WriteAllText(JsonGardens, jsonString);
+    }
+
+    private void SaveOresToFile()
+    {
+        string jsonString = JsonConvert.SerializeObject(Ores);
+        File.WriteAllText(JsonOres, jsonString);
     }
 }

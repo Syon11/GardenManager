@@ -16,7 +16,8 @@ public class ConsoleDisplay
         Console.WriteLine("1) Select User");
         Console.WriteLine("2) Manage Plants");
         Console.WriteLine("3) Manage Gardens");
-        Console.WriteLine("4) Exit");
+        Console.WriteLine("4) Make Alchemical Concoctions");
+        Console.WriteLine("5) Exit");
         Console.Write("Select an option: ");
     }
 
@@ -44,7 +45,8 @@ public class ConsoleDisplay
         Console.WriteLine("Plant Management");
         Console.WriteLine("");
         Console.WriteLine("1) Modify Plant");
-        Console.WriteLine("2) Cancel");
+        Console.WriteLine("2) Rename Plant");
+        Console.WriteLine("3) Cancel");
         Console.Write("Select an option: ");
     }
 
@@ -59,76 +61,43 @@ public class ConsoleDisplay
 
     public void DisplayEssenceListing()
     {
+        int iterator = 0;
         Console.WriteLine("Essences: ");
-        Console.WriteLine("0) Feu");
-        Console.WriteLine("1) Foudre");
-        Console.WriteLine("2) Glace");
-        Console.WriteLine("3) Acide");
-        Console.WriteLine("4) Vie");
-        Console.WriteLine("5) Mort");
-        Console.WriteLine("6) Soleil");
-        Console.WriteLine("7) Lune");
+        foreach (string essence in Enum.GetNames(typeof(Essence)))
+        {
+            Console.WriteLine($"{iterator}) {essence}");
+            iterator++;
+        }
     }
 
     public void DisplayGenusListing()
     {
+        int iterator = 0;
         Console.WriteLine("Genus types: ");
-        Console.WriteLine("0) Invasive");
-        Console.WriteLine("1) Bulbe");
-        Console.WriteLine("2) Grimpante");
-        Console.WriteLine("3) Communicante");
+        foreach (string genus in Enum.GetNames(typeof(Genus)))
+        {
+            Console.WriteLine($"{iterator}) {genus}");
+        }
     }
 
     public void DisplayEffectListing()
     {
-        Console.WriteLine("0) Flux");	
-        Console.WriteLine("1) Graisseux"); 	
-        Console.WriteLine("2) Huileux");
-        Console.WriteLine("3) Naphta");
-        Console.WriteLine("4) Antidouleur");
-        Console.WriteLine("5) Antitoxine");
-        Console.WriteLine("6) Antimagie");
-        Console.WriteLine("7) Argent_Alchimique");
-        Console.WriteLine("8) Armure_Naturelle");
-        Console.WriteLine("9) Calme");
-        Console.WriteLine("10) Celerite");
-        Console.WriteLine("11) Charisme");
-        Console.WriteLine("12) Concentration");
-        Console.WriteLine("13) Contre_Poison");
-        Console.WriteLine("14) Corps_Epineux");
-        Console.WriteLine("15) Decoposition");
-        Console.WriteLine("16) Extrait_Abjuration");
-        Console.WriteLine("17) Extrait_Evocation");
-        Console.WriteLine("18) Extrait_Illusion");
-        Console.WriteLine("19) Extrait_Enchantement");
-        Console.WriteLine("20) Extrait_Conjuration");
-        Console.WriteLine("21) Extrait_Divination");
-        Console.WriteLine("22) Extrait_Nécromancie");
-        Console.WriteLine("23) Faiblesse");
-        Console.WriteLine("24) Force");
-        Console.WriteLine("25) Terre");
-        Console.WriteLine("26) Feu");
-        Console.WriteLine("27) Foudre");
-        Console.WriteLine("28) Glace");
-        Console.WriteLine("29) Insomnie");
-        Console.WriteLine("30) Invisibilite");
-        Console.WriteLine("31) Mana");
-        Console.WriteLine("32) Mensonge");
-        Console.WriteLine("33) Paralysie");
-        Console.WriteLine("34) Charme");
-        Console.WriteLine("35) Peur");
-        Console.WriteLine("36) Poison");
-        Console.WriteLine("37) Polymorphe");
-        Console.WriteLine("38) Rage");	
-        Console.WriteLine("39) Remede");	
-        Console.WriteLine("40) Soin");
-        Console.WriteLine("41) Sommeil");
-        Console.WriteLine("42) Stabilisant");	
-        Console.WriteLine("43) Stimulant");	
-        Console.WriteLine("44) Vitalite"); 	
-        Console.WriteLine("45) Vivifiant");	
-        Console.WriteLine("46) Silence");
+        int iterator = 0;
+        Console.Clear(); 
+        Console.WriteLine("List of Alchemical effects: ");
+        foreach (string effect in Enum.GetNames(typeof(Effect)))
+        {
+            Console.WriteLine($"{iterator}) {effect}");
+        }
     }
+
+    public void DisplayConfirmation()
+    {
+        Console.Clear();
+        Console.WriteLine("Are you sure you want to commit this action? The changes will be irreversible.");
+        Console.Write("Y/N: ");
+    }   
+    
     public void DisplayPlantSelection()
     {
         Console.Write("Please select a plant by ID: ");
@@ -172,15 +141,15 @@ public class ConsoleDisplay
         Console.WriteLine();
         Console.WriteLine("Please enter a command using this format: [Action][Y][X]");
         Console.WriteLine("Possible actions:");
-        Console.WriteLine("0) Purchase a plot");
-        Console.WriteLine("1) Plant a seed");
-        Console.WriteLine("2) Harvest");
-        Console.WriteLine("3) Use fertilizer");
-        Console.WriteLine("4) Add a row");
-        Console.WriteLine("5) Add a column");
-        Console.WriteLine("6) Trigger weather effect");
-        Console.WriteLine("7) End turn");
-        Console.WriteLine("8) Examine Plot");
+        Console.WriteLine("0) Examine Plot");
+        Console.WriteLine("1) Purchase a plot");
+        Console.WriteLine("2) Plant a seed");
+        Console.WriteLine("3) Harvest");
+        Console.WriteLine("4) Use fertilizer");
+        Console.WriteLine("5) Add a row");
+        Console.WriteLine("6) Add a column");
+        Console.WriteLine("7) Trigger weather effect");
+        Console.WriteLine("8) End turn");
         Console.WriteLine("9) Cancel");
         Console.Write("Select action: ");
     }
@@ -198,27 +167,35 @@ public class ConsoleDisplay
                     {
                         case Essence.Feu:
                             ConsoleHelper.SetBackgroundColorToDarkRed();
+                            ConsoleHelper.SetForegroundColorToBlack();
                             break;
                         case Essence.Foudre:
                             ConsoleHelper.SetBackgroundColorToDarkYellow();
+                            ConsoleHelper.SetForegroundColorToBlack();
                             break;
                         case Essence.Glace:
                             ConsoleHelper.SetBackgroundColorToDarkBlue();
+                            ConsoleHelper.SetForegroundColorToBlack();
                             break;
                         case Essence.Acide:
                             ConsoleHelper.SetBackgroundColorToDarkGreen();
+                            ConsoleHelper.SetForegroundColorToBlack();
                             break;
                         case Essence.Vie:
                             ConsoleHelper.SetBackgroundColorToDarkCyan();
+                            ConsoleHelper.SetForegroundColorToBlack();
                             break;
                         case Essence.Mort:
                             ConsoleHelper.SetBackgroundColorToDarkMagenta();
+                            ConsoleHelper.SetForegroundColorToBlack();
                             break;
                         case Essence.Soleil:
                             ConsoleHelper.SetBackgroundColorToYellow();
+                            ConsoleHelper.SetForegroundColorToBlack();
                             break;
                         case Essence.Lune:
                             ConsoleHelper.SetBackgroundColorToGray();
+                            ConsoleHelper.SetForegroundColorToBlack();
                             break;
                     }
                 }
@@ -231,6 +208,7 @@ public class ConsoleDisplay
                     Console.Write("   ");
                 }
                 ConsoleHelper.SetBackgroundColorToBlack();
+                ConsoleHelper.SetForegroundColorToWhite();
                 Console.Write("|");
             }
             Console.WriteLine();
