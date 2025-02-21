@@ -5,6 +5,8 @@ namespace GardenManager.Model;
 public class TieredEffect
 {
     public int Tier { get; set; }
+    public int PerfectionTiers { get; set; }
+    public Essence Essence { get; set; }
     public Effect Effect { get; set; }
     public string EffectDescription { get; set; } = string.Empty;
 
@@ -95,7 +97,7 @@ public class TieredEffect
                         break;
                 }
                 break;
-            case Effect.Charisme:
+            case Effect.Heroisme:
                 switch (Tier)
                 {
                     case 1:
@@ -649,7 +651,7 @@ public class TieredEffect
                         break;
                 }
                 break;
-            case Effect.Charisme:
+            case Effect.Heroisme:
                 switch (Tier)
                 {
                     case 1:

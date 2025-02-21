@@ -441,4 +441,14 @@ public class Plant : IAlchemizable
 
         Name = newName;
     }
+
+    public void PrintWithFirstEffect()
+    {
+        Console.WriteLine($"{Id}) {Name}: [{Enum.GetName(typeof(Effect), AlchemicalEffects[0])}]");
+    }
+
+    public void PrintWithAllEffects()
+    {
+        Console.WriteLine($"{Id}) {Name}: [{Enum.GetName(typeof(Effect), AlchemicalEffects[0])}, {Enum.GetName(typeof(Effect), AlchemicalEffects[1])}, {Enum.GetName(typeof(Effect), AlchemicalEffects[2])}, {Enum.GetName(typeof(Effect), AlchemicalEffects[3])}]");
+    }
 }

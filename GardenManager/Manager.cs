@@ -11,12 +11,14 @@ public class Manager
     private List<Ore> Ores { get; set; }
     private List<User> Users { get; set; }
     private List<Garden> Gardens { get; set; }
+    private List<AlchemyEffect> AlchemyEffects { get; set; }
     private User? CurrentUser { get; set; }
     private ConsoleDisplay CD { get; set; } = new();
     private const string JsonPlants = "plants.json";
     private const string JsonUsers = "users.json";
     private const string JsonGardens = "gardens.json";
     private const string JsonOres = "ores.json";
+    private const string JsonAlchEffects = "alcheffect.json";
 
     public Manager()
     {
@@ -24,6 +26,7 @@ public class Manager
         Ores = [];
         Users = [];
         Gardens = [];
+        AlchemyEffects = [];
         Init();
         Run();
     }
@@ -108,7 +111,7 @@ public class Manager
 
     private void ConcoctPotion()
     {
-        PotionBuilder builder = new PotionBuilder(Plants, Ores);
+        PotionBuilder builder = new PotionBuilder(Plants, Ores, AlchemyEffects);
 
     }
     
@@ -224,6 +227,16 @@ public class Manager
         if (File.Exists(JsonUsers))
         {
             LoadUsersFromFile();
+        }
+
+        if (!File.Exists(JsonAlchEffects))
+        {
+            InitAlchEffects();
+            SaveAlchemyEffectsToFile();
+        }
+        else
+        {
+            LoadAlchemyEffectsFromFile();
         }
 
         if (!File.Exists(JsonOres))
@@ -369,6 +382,52 @@ public class Manager
         ];
     }
 
+    private void InitAlchEffects()
+    {
+        AlchemyEffects = 
+        [
+            new AlchemyEffect(Effect.Flux, Essence.Glace),
+            new AlchemyEffect(Effect.Graisseux, Essence.Vie),
+            new AlchemyEffect(Effect.Huileux, Essence.Acide),
+            new AlchemyEffect(Effect.Naphta, Essence.Feu),
+            new AlchemyEffect(Effect.Terre, Essence.Acide),
+            new AlchemyEffect(Effect.Antidouleur, Essence.Vie),
+            new AlchemyEffect(Effect.Antitoxine, Essence.Acide),
+            new AlchemyEffect(Effect.Antimagie, Essence.Lune),
+            new AlchemyEffect(Effect.Argent_Alchimique, Essence.Soleil),
+            new AlchemyEffect(Effect.Armure_Naturelle, Essence.Acide),
+            new AlchemyEffect(Effect.Calme, Essence.Glace),
+            new AlchemyEffect(Effect.Celerite, Essence.Foudre),
+            new AlchemyEffect(Effect.Heroisme, Essence.Foudre),
+            new AlchemyEffect(Effect.Concentration, Essence.Glace),
+            new AlchemyEffect(Effect.Corps_Epineux, Essence.Feu),
+            new AlchemyEffect(Effect.Decoposition, Essence.Mort),
+            new AlchemyEffect(Effect.Extrait_Arcanique, Essence.Lune),
+            new AlchemyEffect(Effect.Faiblesse, Essence.Mort),
+            new AlchemyEffect(Effect.Feu, Essence.Feu),
+            new AlchemyEffect(Effect.Force, Essence.Acide),
+            new AlchemyEffect(Effect.Foudre, Essence.Foudre),
+            new AlchemyEffect(Effect.Glace, Essence.Glace),
+            new AlchemyEffect(Effect.Insomnie, Essence.Feu),
+            new AlchemyEffect(Effect.Invisibilite, Essence.Lune),
+            new AlchemyEffect(Effect.Mana, Essence.Soleil),
+            new AlchemyEffect(Effect.Mensonge, Essence.Lune),
+            new AlchemyEffect(Effect.Paralysie, Essence.Mort),
+            new AlchemyEffect(Effect.Charme, Essence.Soleil),
+            new AlchemyEffect(Effect.Peur, Essence.Lune),
+            new AlchemyEffect(Effect.Poison, Essence.Mort),
+            new AlchemyEffect(Effect.Polymorphe, Essence.Glace),
+            new AlchemyEffect(Effect.Rage, Essence.Feu),
+            new AlchemyEffect(Effect.Remede, Essence.Vie),
+            new AlchemyEffect(Effect.Soin, Essence.Vie),
+            new AlchemyEffect(Effect.Sommeil, Essence.Lune),
+            new AlchemyEffect(Effect.Stabilisant, Essence.Vie),
+            new AlchemyEffect(Effect.Stimulant, Essence.Soleil),
+            new AlchemyEffect(Effect.Vitalite, Essence.Vie),
+            new AlchemyEffect(Effect.Silence, Essence.Foudre)
+        ];
+    }
+
     private void RandomizeEffects()
     {
         Console.WriteLine("Randomizing Plants");
@@ -382,8 +441,6 @@ public class Manager
         bool goodDistribution1 = false;
         Random random = new Random();
         
-
-
         while (!goodDistribution1)
         {
             goodDistribution1 = true;
@@ -416,11 +473,9 @@ public class Manager
             }
         }
         
-        Console.WriteLine("Good good distribution");
-
         foreach (Plant plant in Plants)
         {
-            plant.SecondaryEffect = (SecondaryEffect)random.Next(0, numberOfSecondaryEffects);
+            plant.SecondaryEffect = (SecondaryEffect)random.Next(0, numberOfSecondaryEffects -1);
         }
 
         foreach (var plant in Plants)
@@ -498,6 +553,16 @@ public class Manager
             Ores = tempOres;
         }
     }
+
+    private void LoadAlchemyEffectsFromFile()
+    {
+        string jsonString = File.ReadAllText(JsonAlchEffects);
+        List<AlchemyEffect>? tempAlchemyEffects = JsonConvert.DeserializeObject<List<AlchemyEffect>>(jsonString);
+        if (tempAlchemyEffects != null)
+        {
+            AlchemyEffects = tempAlchemyEffects;
+        } 
+    }
     
     private void TerminateProgram()
     {
@@ -521,5 +586,11 @@ public class Manager
     {
         string jsonString = JsonConvert.SerializeObject(Ores);
         File.WriteAllText(JsonOres, jsonString);
+    }
+
+    private void SaveAlchemyEffectsToFile()
+    {
+        string jsonString = JsonConvert.SerializeObject(AlchemyEffects);
+        File.WriteAllText(JsonAlchEffects, jsonString);
     }
 }

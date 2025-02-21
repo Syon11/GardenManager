@@ -9,6 +9,7 @@ public class Ore : IAlchemizable
     public string Name { get; set; }
     public string Description { get; set; }
     public List<Effect> AlchemicalEffects { get; set; }
+    public SecondaryEffect SecondaryEffect { get; set; }
     public Essence Essence { get; set; }
     public int Depth { get; set; }
     public int Tier { get; set; }

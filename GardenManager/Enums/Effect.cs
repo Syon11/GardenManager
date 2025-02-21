@@ -13,7 +13,7 @@ public enum Effect
     Armure_Naturelle,
     Calme,
     Celerite,
-    Charisme,
+    Heroisme,
     Concentration,	
     Corps_Epineux,
     Decoposition,
