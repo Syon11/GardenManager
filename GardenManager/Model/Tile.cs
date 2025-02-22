@@ -8,6 +8,7 @@ public class Tile
     public Plant? Plant { get; set; }
     public Essence? Essence_Override { get; set; }
     public User? Owner { get; set; }
+    public bool IsProtected { get; set; }
     public int X { get; set; }
     public int Y { get; set; }
     
@@ -55,11 +56,23 @@ public class Tile
         Owner = owner;
     }
 
-    public Plant GenerateWeed()
+    public Plant? GenerateWeed()
     {
         Random rnd = new Random();
         int rndEssence = rnd.Next(0, 8);
         int rndGenus = rnd.Next(0, 4);
-        return new Plant(96, "Mauvaise herbe", (Essence)rndEssence, (Genus)rndGenus, new List<Effect>(), SecondaryEffect.Toxique);
+        if (!IsProtected)
+        {
+            return new Plant(96, "Mauvaise herbe", (Essence)rndEssence, (Genus)rndGenus, new List<Effect>(), SecondaryEffect.Toxique);
+        }
+        else
+        {
+            return Plant;
+        }
+    }
+
+    public void SetProtected()
+    {
+        IsProtected = true;
     }
 }

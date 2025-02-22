@@ -6,6 +6,7 @@ namespace GardenManager.Model;
 public class Ore : IAlchemizable
 {
     
+    public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public List<Effect> AlchemicalEffects { get; set; }
@@ -17,8 +18,9 @@ public class Ore : IAlchemizable
 
     public Ore(){}
     
-    public Ore(string name, string description, List<Effect> alchemicalEffects, Essence essence, int depth, int tier, bool isMineable)
+    public Ore(int id, string name, string description, List<Effect> alchemicalEffects, Essence essence, int depth, int tier, bool isMineable)
     {
+        Id = id;
         Name = name;
         Description = description;
         AlchemicalEffects = alchemicalEffects;

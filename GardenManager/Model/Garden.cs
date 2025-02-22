@@ -6,6 +6,7 @@ namespace GardenManager.Model;
 public class Garden
 {
     public int Id { get; set; }
+    public string Name { get; set; }
     public WeatherEffects WeatherEffect { get; set; } = WeatherEffects.Sunny;
     public List<List<Tile>> Tiles { get; set; } = new List<List<Tile>>();
 
@@ -13,6 +14,16 @@ public class Garden
     
     public void Init(List<Plant> plants)
     {
+        Console.Clear();
+        Console.Write("Please enter a name for this garden: ");
+        string? name = Console.ReadLine();
+        if (string.IsNullOrEmpty(name))
+        {
+            Console.WriteLine("Please enter a name for this garden: ");
+            name = Console.ReadLine();
+        }
+        Name = name!;
+        
         Tiles.Add(new List<Tile>());
         Tiles.Add(new List<Tile>());
         Tiles.Add(new List<Tile>());
@@ -35,7 +46,7 @@ public class Garden
         {
             CD.DisplayGardenGrid(this);
             string? action = Console.ReadLine();
-            if (string.IsNullOrEmpty(action) || !InputValidator.ValidateEntryWithRegex(action, $"^[1-9][0-{Tiles.Count}][0-{Tiles[0].Count}]$"))
+            if (string.IsNullOrEmpty(action) || !InputValidator.ValidateEntryWithRegex(action, "^[0-9]{3,4}$"))
             {
                 Console.Write("Invalid input, please try again: ");
                 action = Console.ReadLine();
@@ -65,18 +76,40 @@ public class Garden
                     GrowCol();
                     break;
                 case('7'):
-                    ChangeWeather();
+                    ProtectTile(action, user);
                     break;
                 case('8'):
                     EndTurn(CD);
                     break;
                 case('9'):
-                    inMenu = false;
+                    switch (action[1])
+                    {
+                        case '0':
+                            //ExitWithoutSave
+                            break;
+                        case '1':
+                            //SetWeatherEffects
+                            break;
+                        case '9':
+                            inMenu = false;
+                            break;
+                    }
                     break;
             }
         }
     }
 
+    private void ProtectTile(string action, User user)
+    {
+        if (Tiles[action[1] - '0'][action[2] - '0'].Plant != null)
+        {
+            if (Tiles[action[1] - '0'][action[2] - '0'].Owner == user)
+            {
+                Tiles[action[1] - '0'][action[2] - '0'].SetProtected();
+            }
+        }
+    }
+    
     private void ExaminePlot(string action)
     {
         Console.Clear();
@@ -344,7 +377,7 @@ public class Garden
                 for (int j = 0; j < Tiles[i].Count; j++)
                 {
                     int infestationChance = rnd.Next(0, 5);
-                    if (infestationChance == 0){
+                    if (infestationChance == 0 && !Tiles[i][j].IsProtected){
                         if (i == 0 || j == 0 || i == Tiles.Count - 1 || j == Tiles.Count - 1)
                         {
                             Tiles[i][j].Plant = Tiles[i][j].GenerateWeed();
@@ -366,11 +399,14 @@ public class Garden
                             Tiles[i][j].Plant = new Plant(Tiles[i][j - 1].Plant!);
                         }
                     }
+                    else
+                    {
+                        Tiles[i][j].IsProtected = false;
+                    }
                 }
             }
         }
-
-        // Act edge infestations
+        
         // Act Weather effect
     }
 

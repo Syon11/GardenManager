@@ -59,6 +59,15 @@ public class ConsoleDisplay
         }
     }
 
+    public void DisplayOreListing(List<Ore> oreList)
+    {
+        Console.WriteLine("Ore Listing: ");
+        foreach (Ore ore in oreList)
+        {
+            Console.WriteLine($"{ore.Id}) {ore.Name}");
+        }
+    }
+    
     public void DisplayEssenceListing()
     {
         int iterator = 0;
@@ -103,13 +112,17 @@ public class ConsoleDisplay
         Console.Write("Please select a plant by ID: ");
     }
     
-    public void DisplayGardenSelection(int numberOfGardens)
+    public void DisplayGardenSelection(List<Garden> gardens)
     {
         Console.Clear();
         Console.WriteLine("Available gardens:");
-        for (int i = 0; i < numberOfGardens; i++)
-            Console.WriteLine($"{i})");
-        Console.WriteLine($"{numberOfGardens}) New Garden");
+        int iterator = 0;
+        foreach (var garden in gardens)
+        {
+            Console.WriteLine($"{iterator}) {garden.Name}");
+            iterator++;
+        }
+        Console.WriteLine($"{gardens.Count}) New Garden");
         Console.WriteLine("Select a garden: ");
     }
     
@@ -148,9 +161,13 @@ public class ConsoleDisplay
         Console.WriteLine("4) Use fertilizer");
         Console.WriteLine("5) Add a row");
         Console.WriteLine("6) Add a column");
-        Console.WriteLine("7) Trigger weather effect");
+        Console.WriteLine("7) Protect a Tile");
         Console.WriteLine("8) End turn");
         Console.WriteLine("9) Cancel");
+        Console.WriteLine("9000) Rollback");
+        Console.WriteLine("9100) Set Weather");
+        Console.WriteLine("9999) Exit");
+        
         Console.Write("Select action: ");
     }
 

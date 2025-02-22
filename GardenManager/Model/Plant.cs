@@ -129,23 +129,34 @@ public class Plant : IAlchemizable
             List<Tile> tilesToPropagate = new List<Tile>();
             if (tile.X >= 0)
             {
-                tilesToPropagate.Add(garden.Tiles[(int)tile.X][(int)tile.Y]);
+                if (!garden.Tiles[(int)tile.X][(int)tile.Y].IsProtected)
+                {
+                    tilesToPropagate.Add(garden.Tiles[(int)tile.X][(int)tile.Y]);
+                }
             }
             tile = new Vector2(y + 1, x);
             if (tile.X < maxX)
             {
-
-                tilesToPropagate.Add(garden.Tiles[(int)tile.X][(int)tile.Y]);
+                if (!garden.Tiles[(int)tile.X][(int)tile.Y].IsProtected)
+                {
+                    tilesToPropagate.Add(garden.Tiles[(int)tile.X][(int)tile.Y]);
+                }
             }
             tile = new Vector2(y, x - 1);
             if (tile.Y >= 0)
             {
-                tilesToPropagate.Add(garden.Tiles[(int)tile.X][(int)tile.Y]);
+                if (!garden.Tiles[(int)tile.X][(int)tile.Y].IsProtected)
+                {
+                    tilesToPropagate.Add(garden.Tiles[(int)tile.X][(int)tile.Y]);
+                }
             }
             tile = new Vector2(y, x + 1);
             if (tile.Y < maxY)
             {
-                tilesToPropagate.Add(garden.Tiles[(int)tile.X][(int)tile.Y]);
+                if (!garden.Tiles[(int)tile.X][(int)tile.Y].IsProtected)
+                {
+                    tilesToPropagate.Add(garden.Tiles[(int)tile.X][(int)tile.Y]);
+                }
             }
 
             List<Tile> tilesToRemove = new List<Tile>();
@@ -444,7 +455,7 @@ public class Plant : IAlchemizable
 
     public void PrintWithFirstEffect()
     {
-        Console.WriteLine($"{Id}) {Name}: [{Enum.GetName(typeof(Effect), AlchemicalEffects[0])}]");
+        Console.WriteLine($"{Id}) {Name}: [{Enum.GetName(typeof(Effect), AlchemicalEffects[0])}], Essence: {Essence}, Genus: {Genus}");
     }
 
     public void PrintWithAllEffects()

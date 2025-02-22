@@ -171,7 +171,7 @@ public class Manager
     
     private void HandleGardenManagement()
     {
-        CD.DisplayGardenSelection(Gardens.Count);
+        CD.DisplayGardenSelection(Gardens);
         string? selection = Console.ReadLine();
         if (string.IsNullOrEmpty(selection) || !InputValidator.ValidateEntryWithRegex(selection!, @$"^[0-{Gardens.Count}]{{1}}$"))
         {
@@ -210,15 +210,18 @@ public class Manager
     
     private void Init()
     {
-        if (!File.Exists(JsonPlants))
+        if (!File.Exists(JsonPlants) || !File.Exists(JsonOres))
         {
             InitPlantsBase();
+            InitOres();
             RandomizeEffects();
             SavePlantsToFile();
+            SaveOresToFile();
         }
         else
         {
             LoadPlantsFromFile();
+            LoadOresFromFile();
         }
         if (File.Exists(JsonGardens))
         {
@@ -237,16 +240,6 @@ public class Manager
         else
         {
             LoadAlchemyEffectsFromFile();
-        }
-
-        if (!File.Exists(JsonOres))
-        {
-            InitOres();
-            SaveOresToFile();
-        }
-        else
-        {
-            LoadOresFromFile();
         }
     }
     
@@ -357,28 +350,28 @@ public class Manager
     {
         Ores =
         [
-            new Ore("Fer", "Du fer", [], Essence.Acide, 1, 1, true),
-            new Ore("Charbon", "Du charbon", [], Essence.Acide, 1, 1, true),
-            new Ore("Cuivre", "Du cuivre", [], Essence.Acide, 1, 1, true),
-            new Ore("Plomb", "Du plomb", [], Essence.Acide, 1, 2, true),
-            new Ore("Étain", "De l'étain", [], Essence.Acide, 1, 2, true),
-            new Ore("Argent", "De l'argent", [], Essence.Acide, 2, 2, true),
-            new Ore("Bismuth", "Du bismuth", [], Essence.Acide, 2, 0, true),
-            new Ore("Acier", "Du l'acier", [], Essence.Acide, 0, 3, false),
-            new Ore("Bronze", "Du bronze", [], Essence.Acide, 0, 3, false),
-            new Ore("Or", "De l'or", [], Essence.Acide, 2, 3, true),
-            new Ore("Cobalt", "Du cobalt", [], Essence.Acide, 2, 3, true),
-            new Ore("Acier Froid", "Du l'acier froid", [], Essence.Acide, 0, 4, false),
-            new Ore("Acier Noir", "Du l'acier noir", [], Essence.Acide, 0, 4, false),
-            new Ore("Ferreux", "Du ferreux", [], Essence.Acide, 3, 4, true),
-            new Ore("Obsidienne", "De l'obsidienne", [], Essence.Acide, 3, 4, true),
-            new Ore("Argent Sterling", "De l'argent sterling", [], Essence.Acide, 0, 4, false),
-            new Ore("Électrum", "Du l'électrum", [], Essence.Acide, 0, 4, false),
-            new Ore("Larme Lunaire", "Une larme lunaire", [], Essence.Acide, 3, 4, true),
-            new Ore("Or Rose", "De l'or rose", [], Essence.Acide, 0, 4, false),
-            new Ore("Adamantium", "De l'adamantium", [], Essence.Acide, 0, 5, false),
-            new Ore("Mithril", "Du mithril", [], Essence.Acide, 0, 5, false),
-            new Ore("Orichalcum", "De l'orichalcum", [], Essence.Acide, 0, 5, false)
+            new Ore(0, "Fer", "Du fer", [], Essence.Acide, 1, 1, true),
+            new Ore(1, "Charbon", "Du charbon", [], Essence.Acide, 1, 1, true),
+            new Ore(2,"Cuivre", "Du cuivre", [], Essence.Acide, 1, 1, true),
+            new Ore(3,"Plomb", "Du plomb", [], Essence.Acide, 1, 2, true),
+            new Ore(4,"Étain", "De l'étain", [], Essence.Acide, 1, 2, true),
+            new Ore(5,"Argent", "De l'argent", [], Essence.Acide, 2, 2, true),
+            new Ore(6,"Bismuth", "Du bismuth", [], Essence.Acide, 2, 0, true),
+            new Ore(7,"Acier", "Du l'acier", [], Essence.Acide, 0, 3, false),
+            new Ore(8,"Bronze", "Du bronze", [], Essence.Acide, 0, 3, false),
+            new Ore(9,"Or", "De l'or", [], Essence.Acide, 2, 3, true),
+            new Ore(10,"Cobalt", "Du cobalt", [], Essence.Acide, 2, 3, true),
+            new Ore(11,"Acier Froid", "Du l'acier froid", [], Essence.Acide, 0, 4, false),
+            new Ore(12,"Acier Noir", "Du l'acier noir", [], Essence.Acide, 0, 4, false),
+            new Ore(13,"Ferreux", "Du ferreux", [], Essence.Acide, 3, 4, true),
+            new Ore(14,"Obsidienne", "De l'obsidienne", [], Essence.Acide, 3, 4, true),
+            new Ore(15,"Argent Sterling", "De l'argent sterling", [], Essence.Acide, 0, 4, false),
+            new Ore(16,"Électrum", "Du l'électrum", [], Essence.Acide, 0, 4, false),
+            new Ore(17,"Larme Lunaire", "Une larme lunaire", [], Essence.Acide, 3, 4, true),
+            new Ore(18,"Or Rose", "De l'or rose", [], Essence.Acide, 0, 4, false),
+            new Ore(19,"Adamantium", "De l'adamantium", [], Essence.Acide, 0, 5, false),
+            new Ore(20,"Mithril", "Du mithril", [], Essence.Acide, 0, 5, false),
+            new Ore(21,"Orichalcum", "De l'orichalcum", [], Essence.Acide, 0, 5, false)
         ];
     }
 
@@ -432,18 +425,19 @@ public class Manager
     {
         Console.WriteLine("Randomizing Plants");
         const int effectsPerPlant = 4;
+        const int effectsPerOres = 4;
         int plantsCount = Plants.Count;
-        
+        int oresCount = Ores.Count;
         int baseNumber;
         int inequality;
         int numberOfEffects = Enum.GetNames(typeof(Effect)).Length;
         int numberOfSecondaryEffects = Enum.GetNames(typeof(SecondaryEffect)).Length;
-        bool goodDistribution1 = false;
+        bool goodDistribution = false;
         Random random = new Random();
         
-        while (!goodDistribution1)
+        while (!goodDistribution)
         {
-            goodDistribution1 = true;
+            goodDistribution = true;
             baseNumber = (plantsCount * effectsPerPlant) / numberOfEffects;
             inequality = (plantsCount * effectsPerPlant) % numberOfEffects;
 
@@ -459,7 +453,7 @@ public class Manager
                 RemoveEmptyNumbers(effectsNumbers, numbers);
                 if (numbers.Count < 4)
                 {
-                    goodDistribution1 = false;
+                    goodDistribution = false;
                     break;
                 }
 
@@ -472,15 +466,44 @@ public class Manager
                 Plants[i].AlchemicalEffects = effects;
             }
         }
-        
-        foreach (Plant plant in Plants)
-        {
-            plant.SecondaryEffect = (SecondaryEffect)random.Next(0, numberOfSecondaryEffects -1);
-        }
 
         foreach (var plant in Plants)
         {
-            Console.WriteLine(plant.AlchemicalEffects);
+            plant.SecondaryEffect = (SecondaryEffect)random.Next(0, numberOfSecondaryEffects - 1);
+        }
+        
+        goodDistribution = false;
+        
+        while (!goodDistribution)
+        {
+            goodDistribution = true;
+            baseNumber = (oresCount * effectsPerOres) / numberOfEffects;
+            inequality = (oresCount * effectsPerOres) % numberOfEffects;
+
+            List<int> effectsNumbers = [];
+            for (int i = 0; i < numberOfEffects; i++)
+            {
+                effectsNumbers.Add(i <= inequality ? baseNumber + 1 : baseNumber);
+            }
+            
+            for (int i = 0; i < oresCount; i++)
+            {
+                List<int> numbers = Enumerable.Range(0, numberOfEffects).ToList();
+                RemoveEmptyNumbers(effectsNumbers, numbers);
+                if (numbers.Count < 4)
+                {
+                    goodDistribution = false;
+                    break;
+                }
+
+                ShuffleList(numbers, random);
+                List<Effect> effects = [(Effect)numbers[0], (Effect)numbers[1], (Effect)numbers[2], (Effect)numbers[3]];
+                effectsNumbers[numbers[0]]--;
+                effectsNumbers[numbers[1]]--;
+                effectsNumbers[numbers[2]]--;
+                effectsNumbers[numbers[3]]--;
+                Ores[i].AlchemicalEffects = effects;
+            }
         }
     }
 

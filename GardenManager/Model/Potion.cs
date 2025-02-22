@@ -27,6 +27,9 @@ public class Potion
     {
         List<Effect> effects = new List<Effect>();
         List<EffectCalculationModel> effectCalcs = new List<EffectCalculationModel>();
+        
+        //Determine all perfect combinations in plant selection.
+        
         foreach (var ingredient in Ingredients)
         {
             foreach (var effect in ingredient.AlchemicalEffects)
@@ -44,7 +47,7 @@ public class Potion
             }
         }
 
-        int currentTier = -1;
+        int currentTier = 0;
         foreach (var ingredient in Ingredients)
         {
             if (ingredient.AlchemicalEffects.Contains(MainEffect))
@@ -94,7 +97,7 @@ public class Potion
                 }
             }
         }
-}
+    }
 
 
     public Effect SelectEffect(IAlchemizable ingredient)
@@ -123,7 +126,8 @@ public class Potion
 
     public void PrintFullPotion()
     {
-        Console.WriteLine($"Main Effets: {Enum.GetName(typeof(Effect), MainEffect)}" );
+        Console.WriteLine($"Is masterwork: {IsMasterwork}");
+        Console.WriteLine($"Main Effects: {Enum.GetName(typeof(Effect), MainEffect)}" );
         Console.WriteLine($"Effect Tier: {TieredEffect.Tier}");
         Console.WriteLine($"Main Essence: {Enum.GetName(typeof(Essence), MainEssence)}");
         Console.WriteLine("Secondary Effects:");
@@ -132,5 +136,30 @@ public class Potion
             Console.WriteLine($"  - {secondaryEffect.ToString()}");
         }
         Console.WriteLine($"Potion description: {TieredEffect.EffectDescription}");
+        Console.WriteLine();
+        Console.WriteLine("Ingredients:");
+        foreach (IAlchemizable ingredient in Ingredients)
+        {
+            Console.WriteLine($" - {ingredient.Name}");
+        }
+    }
+    public void PrintFullCatalyzedPotion()
+    {
+        Console.WriteLine($"Is masterwork: {IsMasterwork}");
+        Console.WriteLine($"Main Effects: {Enum.GetName(typeof(Effect), MainEffect)}" );
+        Console.WriteLine($"Effect Tier: {TieredEffect.Tier}");
+        Console.WriteLine($"Main Essence: {Enum.GetName(typeof(Essence), MainEssence)}");
+        Console.WriteLine("Secondary Effects:");
+        foreach (SecondaryEffect secondaryEffect in SecondaryEffects)
+        {
+            Console.WriteLine($"  - {secondaryEffect.ToString()}");
+        }
+        Console.WriteLine($"Potion description: {TieredEffect.CatalyzedDescription}");
+        Console.WriteLine();
+        Console.WriteLine("Ingredients:");
+        foreach (IAlchemizable ingredient in Ingredients)
+        {
+            Console.WriteLine($" - {ingredient.Name}");
+        }
     }
 }
