@@ -1,4 +1,7 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using GardenManager.Enums.Arcane;
+using GardenManager.Model;
 using GardenManager.Model.Arcane;
 using Newtonsoft.Json;
 
@@ -1098,7 +1101,7 @@ public class SpellManager
                 "Permet de créer une serrure magique de Tiers 3.",
                 "Permet de créer une serrure magique de Tiers 4."
             ])),
-            new ArcaneEffect("Stimulant", thresholds, new List<string>([
+            new ArcaneEffect("Stimulant", thresholds, [
                 "Permet à la cible d'effectuer une action complèxe pendant sa période de convalescence.",
                 "Permet à la cible d'effectuer une action complèxe pendant sa période de convalescence.",
                 "Permet à la cible d'effectuer une action complèxe pendant sa période de convalescence.",
@@ -1110,8 +1113,8 @@ public class SpellManager
                 "Permet à la cible d'effectuer trois actions complèxes pendant sa période de convalescence. Le convalescent possède +2 Max PV pendant sa période de convalescence.",
                 "Permet à la cible d'effectuer quatre actions complèxes pendant sa période de convalescence. Le convalescent possède +2 Max PV pendant sa période de convalescence.",
                 "Permet à la cible d'effectuer quatre actions complèxes pendant sa période de convalescence. Le convalescent possède +2 Max PV pendant sa période de convalescence.",
-            ])),
-            new ArcaneEffect("Suture", thresholds, new List<string>([
+            ]),
+            new ArcaneEffect("Suture", thresholds, [
                 "Fait passer la cible de l'agonie à la convalescence.",
                 "Fait passer la cible de l'agonie à la convalescence.",
                 "Fait passer la cible de l'agonie à la convalescence.",
@@ -1123,8 +1126,8 @@ public class SpellManager
                 "Fait passer la cible de l'agonie à la convalescence. La cible possèdes +2 Max PV pendant sa convalescence",
                 "Fait passer la cible de l'agonie à la convalescence. La cible possèdes +2 Max PV pendant sa convalescence",
                 "Fait passer la cible de l'agonie à la convalescence. La cible possèdes +2 Max PV pendant sa convalescence",
-            ])),
-            new ArcaneEffect("Transfusion", thresholds, new List<string>([
+            ]),
+            new ArcaneEffect("Transfusion", thresholds, [
                 "Permet de souffrir de 2 PV pour guérir la cible de 1 PV.",
                 "Permet de souffrir de 2 PV pour guérir la cible de 1 PV.",
                 "Permet de souffrir de 4 PV pour guérir la cible de 2 PV.",
@@ -1136,7 +1139,7 @@ public class SpellManager
                 "Permet de souffrir de 10 PV pour guérir la cible de 5 PV. Permet de transférer une maladie du lanceur à la cible si l'élément sélectionné est maudit.",
                 "Permet de souffrir de 10 PV pour guérir la cible de 5 PV. Permet de transférer une maladie du lanceur à la cible si l'élément sélectionné est maudit. Permet de transférer une malédiction du lanceur à la cible si l'élément selectionné est maudit.",
                 "Permet de souffrir de 12 PV pour guérir la cible de 6 PV. Permet de transférer une maladie du lanceur à la cible si l'élément sélectionné est maudit. Permet de transférer une malédiction du lanceur à la cible si l'élément selectionné est maudit."
-            ])),
+            ]),
         ];
     }
 
@@ -1192,7 +1195,108 @@ public class SpellManager
     {
         PowerWords =
         [
-            
+            new PowerWord("Nox", "Nuit",2, School.Abjuration, 2, 2, 2),
+            new PowerWord("Dies", "Jour", 2, School.Abjuration, 2, 2, 2),
+            new PowerWord("Crepusculum", "Pénombre", 2, School.Abjuration, 2, 2, 2),
+            new PowerWord("Initium", "Départ", 2, School.Abjuration, 2, 2, 2),
+            new PowerWord("Ruber", "Rouge", 3, School.Abjuration, 3, 3, 3),
+            new PowerWord("Flavus", "Jaune", 3, School.Abjuration, 3, 3, 3),
+            new PowerWord("Caeruleum", "Bleu", 3, School.Abjuration, 3, 3, 3),
+            new PowerWord("Nigreos", "Noir", 3, School.Abjuration, 3, 3, 3),
+            new PowerWord("Alba", "Blanc", 3, School.Abjuration, 3, 3, 3),
+            new PowerWord("Vita", "Vie", 4, School.Abjuration, 4, 4, 4),
+            new PowerWord("Amare", "Amour", 4, School.Abjuration, 4, 4, 4),
+            new PowerWord("Odium", "Haine", 4, School.Abjuration, 4, 4, 4),
+            new PowerWord("Bibere",  "Boire", 4, School.Abjuration, 4, 4, 4),
+            new PowerWord("Pueri", "Enfant", 4, School.Abjuration, 4, 4, 4),
+            new PowerWord("Parentis", "Parent", 4, School.Abjuration, 4, 4, 4),
+            new PowerWord("Edere", "Manger", 4, School.Abjuration, 4, 4, 4),
+            new PowerWord("Corpus", "Corps", 5, School.Abjuration, 5, 5, 5),
+            new PowerWord("Mens", "Esprit", 5, School.Abjuration, 5, 5, 5),
+            new PowerWord("Animal", "Animal", 5, School.Abjuration, 5, 5, 5),
+            new PowerWord("Morbus", "Maladie", 5, School.Abjuration, 5, 5, 5),
+            new PowerWord("Sanguis", "Sang", 5, School.Abjuration, 5, 5, 5),
+            new PowerWord("Lux", "Lumière", 5, School.Abjuration, 5, 5, 5),
+            new PowerWord("Gravitas", "Gravité", 5, School.Abjuration, 5, 5, 5),
+            new PowerWord("Mortem", "Mort", 5, School.Abjuration, 5, 5, 5),
+            new PowerWord("Ignis", "Feu", 5, School.Abjuration, 5, 5, 5),
+            new PowerWord("Elding", "Nuit", 2, School.Conjuration, 2, 2, 2),
+            new PowerWord("Dagr", "Jour", 2, School.Conjuration, 2, 2, 2),
+            new PowerWord("Eta", "Manger", 2, School.Conjuration, 2, 2, 2),
+            new PowerWord("Supa", "Boire", 2, School.Conjuration, 2, 2, 2),
+            new PowerWord("Reisa", "???", 2, School.Conjuration, 2, 2, 2),
+            new PowerWord("Rauor", "Rouge", 3, School.Conjuration, 3,3,3),
+            new PowerWord("Gull", "Jaune", 3, School.Conjuration, 3,3,3),
+            new PowerWord("Blar", "Bleu", 3, School.Conjuration, 3,3,3),
+            new PowerWord("Stena", "Couleur", 3, School.Conjuration, 3,3,3),
+            new PowerWord("Hvitr", "Blanc", 3, School.Conjuration, 3,3,3),
+            new PowerWord("Fjorlag", "Mort", 4, School.Conjuration, 4,4,4),
+            new PowerWord("Aevi", "Vie", 4, School.Conjuration, 4,4,4),
+            new PowerWord("Ljoss", "Lumière", 4, School.Conjuration, 4,4,4),
+            new PowerWord("Kind", "Enfant", 4, School.Conjuration, 4,4,4),
+            new PowerWord("Forellri", "Parent", 4, School.Conjuration, 4,4,4),
+            new PowerWord("Kykvendi", "Animal", 4, School.Conjuration, 4,4,4),
+            new PowerWord("Myrkr", "Pénombre", 4, School.Conjuration, 4,4,4),
+            new PowerWord("Lik", "Corps", 5, School.Conjuration, 5,5,5),
+            new PowerWord("Hyggiandi", "Esprit", 5, School.Conjuration, 5,5,5),
+            new PowerWord("Standa", "Gravité", 5, School.Conjuration, 5,5,5),
+            new PowerWord("Ast", "Amour", 5, School.Conjuration, 5,5,5),
+            new PowerWord("Awnd", "Haine", 5, School.Conjuration, 5,5,5),
+            new PowerWord("Sott", "Maladie", 5, School.Conjuration, 5,5,5),
+            new PowerWord("Watn", "Eau", 5, School.Conjuration, 5,5,5),
+            new PowerWord("Ratri", "Nuit", 2, School.Divination, 2, 2, 2),
+            new PowerWord("Divasa", "Jour", 2, School.Divination, 2, 2, 2),
+            new PowerWord("Godhuli", "Pénombre", 2, School.Divination, 2, 2, 2),
+            new PowerWord("Khaditum", "Manger", 2, School.Divination, 2, 2, 2),
+            new PowerWord("Patum", "Boire", 2, School.Divination, 2, 2, 2),
+            new PowerWord("Aarambha","???", 2, School.Divination, 2, 2, 2),
+            new PowerWord("Varna", "Couleur", 3, School.Divination, 3, 3, 3),
+            new PowerWord("Rakta", "Rouge", 3, School.Divination, 3, 3, 3),
+            new PowerWord("Pitam", "Jaune", 3, School.Divination, 3, 3, 3),
+            new PowerWord("Nila", "Bleu", 3, School.Divination, 3, 3, 3),
+            new PowerWord("Krishna", "Noir", 3, School.Divination, 3, 3, 3),
+            new PowerWord("Svetah", "Blanc", 3, School.Divination, 3, 3, 3),
+            new PowerWord("Amhati", "Maladie",4, School.Divination, 4, 4, 4),
+            new PowerWord("Bala", "Enfant", 4, School.Divination, 4, 4, 4),
+            new PowerWord("Matapitarau", "Parent", 4, School.Divination, 4, 4, 4),
+            new PowerWord("Prema", "Amour", 4, School.Divination, 4, 4, 4),
+            new PowerWord("Dvesti", "Haine", 4, School.Divination, 4, 4, 4),
+            new PowerWord("Vayu", "Air", 4, School.Divination, 4, 4, 4),
+            new PowerWord("Vadha", "Mort", 5, School.Divination, 5, 5, 5),
+            new PowerWord("Ayu", "Vie", 5, School.Divination, 5, 5, 5),
+            new PowerWord("Gurutvakarsanam", "Gravité", 5, School.Divination, 5, 5, 5),
+            new PowerWord("Jala", "Eau", 5, School.Divination, 5, 5, 5),
+            new PowerWord("Agni", "Feu", 5, School.Divination, 5, 5, 5),
+            new PowerWord("Mahi", "Terre", 5, School.Divination, 5, 5, 5),
+            new PowerWord("Dipika", "Lumière", 5, School.Divination, 5, 5, 5),
+            new PowerWord("Pazu", "Animal", 5, School.Divination, 5, 5, 5),
+            new PowerWord("Gig", "Nuit",),
+            new PowerWord("Uan", "Jour",),
+            new PowerWord("Gu","Manger",),
+            new PowerWord("Nag","Boire",),
+            new PowerWord("Dub-sag","???",),
+            new PowerWord("Nam-us", "Mort",),
+            new PowerWord("Nam-ti"),
+            new PowerWord("Dumu"),
+            new PowerWord("Adda"),
+            new PowerWord("Umamu"),
+            new PowerWord("Zur"),
+            new PowerWord("Sig"),
+            new PowerWord("Sa"),
+            new PowerWord("Ku"),
+            new PowerWord("Ni"),
+            new PowerWord("Ub-lil-la"),
+            new PowerWord("Kug"),
+            new PowerWord("An-ta-gal"),
+            new PowerWord("Zal"),
+            new PowerWord("Dim"),
+            new PowerWord("Gansis"),
+            new PowerWord("Su"),
+            new PowerWord("Gidim"),
+            new PowerWord("Dugud"),
+            new PowerWord("Nam-ki-aga"),
+            new PowerWord("Hulgig"),
+            new PowerWord("Izi"),
         ];
     }
 
