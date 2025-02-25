@@ -2,10 +2,9 @@ namespace GardenManager.Model.Arcane;
 
 public abstract class ArcaneConfig
 {
-    string Name { get; set; }
-    List<int> Thresholds { get; set; }
-    List<string> DescriptionAtThresholds { get; set; }
-    
+    public string Name { get; set; }
+    public List<int> Thresholds { get; set; }
+    public List<string> DescriptionAtThresholds { get; set; }
 
     public ArcaneConfig(){}
 

@@ -8,8 +8,8 @@ public class PowerWord : Word
     int Arcainum { get; set; }
     int Flux { get; set; }
 
-    public PowerWord(string WordText, string WordInFrench, int Tier, School school, int potentia, int arcainum, int flux) 
-        : base(WordText, WordInFrench, Tier, school)
+    public PowerWord(string WordText, string WordInFrench, int Tier, School school, int potentia, int arcainum, int flux, bool isHidden = false) 
+        : base(WordText, WordInFrench, Tier, school, isHidden)
     {
         Potentia = potentia;
         Arcainum = arcainum;

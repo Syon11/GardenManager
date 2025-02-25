@@ -15,7 +15,8 @@ public class ShapeWord : ConfigWord
         float potentiaEffect,
         float arcainumEffect, 
         float fluxEffect, 
-        ArcaneShape arcaneShape
+        ArcaneShape arcaneShape,
+        bool isHidden = false
     ) 
         : base(
             WordText, 
@@ -24,7 +25,8 @@ public class ShapeWord : ConfigWord
             school,
             potentiaEffect, 
             arcainumEffect, 
-            fluxEffect
+            fluxEffect,
+            isHidden
         )
     {
         Shape = arcaneShape;

@@ -15,7 +15,8 @@ public class EffectWord : ConfigWord
         float potentiaEffect,
         float arcainumEffect, 
         float fluxEffect, 
-        ArcaneEffect arcaneEffect
+        ArcaneEffect arcaneEffect,
+        bool isHidden = false
     ) 
         : base(
             WordText, 
@@ -24,7 +25,8 @@ public class EffectWord : ConfigWord
             school,
             potentiaEffect, 
             arcainumEffect, 
-            fluxEffect
+            fluxEffect,
+            isHidden
         )
     {
         Effect = arcaneEffect;

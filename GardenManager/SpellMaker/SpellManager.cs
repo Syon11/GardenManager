@@ -1,6 +1,4 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using GardenManager.Model;
+using GardenManager.Enums.Arcane;
 using GardenManager.Model.Arcane;
 using Newtonsoft.Json;
 
@@ -16,13 +14,13 @@ public class SpellManager
     public List<ArcaneShape> ArcaneShapes { get; set; }
     public List<ArcaneModifier> ArcaneModifiers { get; set; }
 
-    public const string JsonShapes = "Shapes.json";
-    public const string JsonEffects = "Effects.json";
-    public const string JsonModifiers = "Modifiers.json"; 
-    public const string JsonPowerWord = "PowerWord.json"; 
-    public const string JsonEffectWord = "EffectWord.json"; 
-    public const string JsonShapeWord = "ShapeWord.json"; 
-    public const string JsonModifierWord = "ModifierWord.json";
+    private const string JsonShapes = "Shapes.json";
+    private const string JsonEffects = "Effects.json";
+    private const string JsonModifiers = "Modifiers.json"; 
+    private const string JsonPowerWord = "PowerWord.json"; 
+    private const string JsonEffectWord = "EffectWord.json"; 
+    private const string JsonShapeWord = "ShapeWord.json"; 
+    private const string JsonModifierWord = "ModifierWord.json";
 
     public SpellManager()
     {
@@ -1144,25 +1142,62 @@ public class SpellManager
 
     private void InitializeShapeWords()
     {
-
+        /* string WordText, 
+           string WordInFrench, 
+           int Tier, 
+           School school, 
+           float potentiaEffect,
+           float arcainumEffect, 
+           float fluxEffect, 
+           ArcaneShape arcaneShape,
+           bool isHidden = false
+           */
+        ShapeWords =
+        [
+            new ShapeWord("Tangere", "Touché", 1, School.Abjuration, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Touché"))!),
+            new ShapeWord("Or", "Projectile", 1, School.Conjuration, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Projectile"))!),
+            new ShapeWord("Dagal-Tag", "Touché", 1, School.Divination, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Touché"))!),
+            new ShapeWord("Taka", "Touché", 1, School.Enchantment, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Touché"))!),
+            new ShapeWord("Cacali", "Projectile", 1, School.Evocation, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Projectile"))!),
+            new ShapeWord("Nehte", "Projectile", 1, School.Illusion, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Projectile"))!),
+            new ShapeWord("Azien", "Touché", 1, School.Necromancy, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Touché"))!),
+            
+        ];
     }
 
     private void InitializeModifierWords()
     {
+        ModifierWords =
+        [
+            new ModifierWord("Abiuratio", "Abjuration", 1, School.Abjuration, 1, 1, 1, null, false, true),
+            new ModifierWord("Vitta", "Conjuration", 1, School.Conjuration, 1, 1, 1, null, false, true),
+            new ModifierWord("Bhavisyavani", "Divination", 1, School.Divination, 1, 1, 1, null, false, true),
+            new ModifierWord("Nam-sub", "Enchantement", 1, School.Enchantment, 1, 1, 1, null, false, true),
+            new ModifierWord("Nahualhuia", "Évocation", 1, School.Evocation, 1, 1, 1, null, false, true),
+            new ModifierWord("Sairinaemma", "Illusion", 1, School.Illusion, 1, 1, 1, null, false, true),
+            new ModifierWord("Tempa", "Nécromancie", 1, School.Necromancy, 1, 1, 1, null, false, true),
 
+        ];
     }
 
     private void InitializeEffectWords()
     {
+        EffectWords =
+        [
 
+        ];
     }
 
     private void InitializePowerWords()
     {
-
+        PowerWords =
+        [
+            
+        ];
     }
 
-    private void RandomizeWordValues()
+
+    private void RandomizePowerWordValues()
     {
         
     }

@@ -444,7 +444,7 @@ public class Plant : IAlchemizable
     {
         Console.Write("Please enter a new name for the plant: ");
         string? newName = Console.ReadLine();
-        while (string.IsNullOrEmpty(newName) || !InputValidator.ValidateEntryWithRegex(newName, @"^\w{4,80}$"))
+        while (string.IsNullOrEmpty(newName) || !InputValidator.ValidateEntryWithRegex(newName, @"^\w|_| |'{4,80}$"))
         {
             Console.Write("Invalid name, Please try again: ");
             newName = Console.ReadLine();

@@ -4,7 +4,8 @@ namespace GardenManager.Model.Arcane;
 
 public class ModifierWord : ConfigWord
 {
-    ArcaneModifier Modifier { get; set; }
+    private ArcaneModifier? Modifier { get; set; }
+    private bool IsSchoolWord { get; set; } 
     public ModifierWord
     (
         string WordText, 
@@ -14,7 +15,9 @@ public class ModifierWord : ConfigWord
         float potentiaEffect,
         float arcainumEffect, 
         float fluxEffect, 
-        ArcaneModifier arcaneModifier
+        ArcaneModifier? arcaneModifier = null,
+        bool isHidden = false,
+        bool isSchoolWord = false
     ) 
         : base(
             WordText, 
@@ -23,9 +26,11 @@ public class ModifierWord : ConfigWord
             school,
             potentiaEffect, 
             arcainumEffect, 
-            fluxEffect
+            fluxEffect,
+            isHidden
         )
     {
         Modifier = arcaneModifier;
+        IsSchoolWord = isSchoolWord;
     }
 }
