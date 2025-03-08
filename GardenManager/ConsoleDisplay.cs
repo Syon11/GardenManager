@@ -17,7 +17,8 @@ public class ConsoleDisplay
         Console.WriteLine("2) Manage Plants");
         Console.WriteLine("3) Manage Gardens");
         Console.WriteLine("4) Make Alchemical Concoctions");
-        Console.WriteLine("5) Exit");
+        Console.WriteLine("5) Spell Manager");
+        Console.WriteLine("6) Exit");
         Console.Write("Select an option: ");
     }
 

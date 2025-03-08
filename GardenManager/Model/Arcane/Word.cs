@@ -4,11 +4,11 @@ namespace GardenManager.Model.Arcane;
 
 public abstract class Word
 {
-    private string WordText { get; set; }
-    private string WordInFrench { get; set; }
-    private int Tier { get; set; }
-    private School School { get; set; }
-    private bool IsHidden { get; set; }
+    public string WordText { get; set; }
+    public string WordInFrench { get; set; }
+    public int Tier { get; set; }
+    public School School { get; set; }
+    public bool IsHidden { get; set; }
 
     public Word(string wordText, string wordInFrench, int tier, School school, bool isHidden = false)
     {

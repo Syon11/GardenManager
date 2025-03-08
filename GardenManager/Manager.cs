@@ -1,5 +1,6 @@
 using GardenManager.Enums;
 using GardenManager.Model;
+using GardenManager.SpellMaker;
 using Newtonsoft.Json;
 using GardenManager.Utility;
 
@@ -41,7 +42,7 @@ public class Manager
             {
                 CD.DisplayMainMenu(CurrentUser);
                 string? input = Console.ReadLine();
-                while (string.IsNullOrEmpty(input) || !InputValidator.ValidateEntryWithRegex(input!, @"^[1-5]$"))
+                while (string.IsNullOrEmpty(input) || !InputValidator.ValidateEntryWithRegex(input!, @"^[1-6]$"))
                 {
                     Console.Write("Invalid entry. Try again: ");
                     input = Console.ReadLine();
@@ -62,6 +63,9 @@ public class Manager
                         ConcoctPotion();
                         break;
                     case "5":
+                        HandleSpellManagement();
+                        break;
+                    case "6":
                         inMainMenu = false;
                         break;
                 }
@@ -113,6 +117,12 @@ public class Manager
     {
         PotionBuilder builder = new PotionBuilder(Plants, Ores, AlchemyEffects);
 
+    }
+
+    private void HandleSpellManagement()
+    {
+        SpellManager manager = new SpellManager();
+        Console.ReadLine();
     }
     
     private void HandlePlantManagement()
