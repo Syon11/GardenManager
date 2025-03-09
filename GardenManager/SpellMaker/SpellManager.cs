@@ -39,7 +39,7 @@ public class SpellManager
 
         Init();
 
-        CreateSpellsFromJson();
+        ImportSpellsFromJson();
     }
 
     private void Init()
@@ -2422,10 +2422,70 @@ public class SpellManager
         }
     }
 
-    private void CreateSpellsFromJson()
+    private void ImportSpellsFromJson()
     {
         string jsonText = File.ReadAllText(JsonSpellInput);
         List<RawSpell> RawSpells = JsonConvert.DeserializeObject<List<RawSpell>>(jsonText);
+        List<Spell> FullSpells = new List<Spell>();
+        foreach (RawSpell spell in RawSpells)
+        {
+            Spell tempSpell = CreateNewSpell(spell); 
+            Console.WriteLine(tempSpell.Schools[0]); 
+        }
         
+    }
+
+    private Spell CreateNewSpell(RawSpell spell)
+    {
+        Spell newSpell = new Spell();
+        try
+        {
+            foreach (string wordText in spell.Words)
+            {
+                Word actualWord = SearchWord(wordText);
+                newSpell.Incantation.Add(actualWord);
+            }
+
+            newSpell.VerifyStructure(ShapeWords, EffectWords, PowerWords, ModifierWords);
+        }
+        catch (Exception ex)
+        {
+            newSpell.AdverseEffect = RandomizeAdverseEffect();
+            newSpell.AdverseEffectReason = ex.Message;
+        }
+        
+        return newSpell;
+    }
+
+    private Word SearchWord(string text)
+    {
+        Word? currentWord;
+        currentWord = PowerWords.Find(t => t.WordText == text);
+        if (currentWord != null)
+        {
+            return currentWord;
+        }
+        currentWord = ShapeWords.Find(t => t.WordText == text);
+        if (currentWord != null)
+        {
+            return currentWord;
+        }
+        currentWord = EffectWords.Find(t => t.WordText == text);
+        if (currentWord != null)
+        {
+            return currentWord;
+        }
+        currentWord = ModifierWords.Find(t => t.WordText == text);
+        if (currentWord != null)
+        {
+            return currentWord;
+        }
+
+        throw new FileNotFoundException("Word not found in current dictionary");
+    }
+
+    private string RandomizeAdverseEffect()
+    {
+        return "A mishap happened, please update method later";
     }
 }

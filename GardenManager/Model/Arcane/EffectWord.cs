@@ -4,7 +4,7 @@ namespace GardenManager.Model.Arcane;
 
 public class EffectWord : ConfigWord
 {
-    ArcaneEffect Effect { get; set; }
+    public ArcaneEffect Effect { get; set; }
 
     public EffectWord
     (
