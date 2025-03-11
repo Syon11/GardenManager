@@ -1,3 +1,5 @@
+using GardenManager.Enums;
+
 namespace GardenManager.Model.Arcane;
 
 public class ArcaneEffect : ArcaneConfig
@@ -139,5 +141,32 @@ public class ArcaneEffect : ArcaneConfig
             InvertedUnholyEffects = invertedUnholyEffects;
         else
             InvertedUnholyEffects = new List<string>();
+    }
+
+    public string ToString(int tier, Element element, bool isInverted = false)
+    {
+        if (isInverted)
+        {
+            return element switch
+            {
+                Element.Acid => AcidEffects is { Count: > 0 } ? AcidEffects[tier] : string.Empty,
+                Element.Fire => FireEffects is { Count: > 0 } ? FireEffects[tier] : string.Empty,
+                Element.Ice => IceEffects is { Count: > 0 } ? IceEffects[tier] : string.Empty,
+                Element.Thunder => ThunderEffects is { Count: > 0 } ? ThunderEffects[tier] : string.Empty,
+                Element.Holy => HolyEffects is { Count: > 0 } ? HolyEffects[tier] : string.Empty,
+                Element.Unholy => UnholyEffects is { Count: > 0 } ? UnholyEffects[tier] : string.Empty,
+                _ => throw new ArgumentOutOfRangeException(nameof(element), element, null)
+            };
+        }
+        return element switch
+        {
+            Element.Acid => InvertedAcidEffects is { Count: > 0 } ? InvertedAcidEffects[tier] : string.Empty,
+            Element.Fire => InvertedFireEffects is { Count: > 0 } ? InvertedFireEffects[tier] : string.Empty,
+            Element.Ice => InvertedIceEffects is { Count: > 0 } ? InvertedIceEffects[tier] : string.Empty,
+            Element.Thunder => InvertedThunderEffects is { Count: > 0 } ? InvertedThunderEffects[tier] : string.Empty,
+            Element.Holy => InvertedHolyEffects is { Count: > 0 } ? InvertedHolyEffects[tier] : string.Empty,
+            Element.Unholy => InvertedUnholyEffects is { Count: > 0 } ? InvertedUnholyEffects[tier] : string.Empty,
+            _ => throw new ArgumentOutOfRangeException(nameof(element), element, null)
+        };
     }
 }

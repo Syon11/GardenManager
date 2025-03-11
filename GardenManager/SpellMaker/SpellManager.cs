@@ -413,6 +413,20 @@ public class SpellManager
                 "Impossible result, should never happen", 
                 "Touché, durée de maitien 30 secondes, 10 pas de déplacement", 
             ]),
+            new ArcaneShape("Touché", [1, 2, 4, 8, 16, 32, 64, 128, 256, 512], 
+            [
+                "La forme permet de faire 5 pas avant de décharger le sort", 
+                "La forme permet de faire 10 pas avant de décharger le sort", 
+                "La forme permet de faire 15 pas avant de décharger le sort", 
+                "La forme permet de faire 20 pas avant de décharger le sort", 
+                "La forme permet de faire 25 pas avant de décharger le sort", 
+                "La forme permet de faire 30 pas avant de décharger le sort", 
+                "La forme permet de faire 35 pas avant de décharger le sort", 
+                "La forme permet de faire 40 pas avant de décharger le sort", 
+                "La forme permet de faire 45 pas avant de décharger le sort", 
+                "La forme permet de faire 50 pas avant de décharger le sort", 
+                "La forme permet de faire 55 pas avant de décharger le sort"
+            ]),
             new ArcaneShape("Voyage Astral", [1, 2, 4, 8, 16, 32, 64, 128, 256, 512], 
             [
                 "Permet de maintenir 1 sort en Voyage Astral", 
@@ -2430,9 +2444,13 @@ public class SpellManager
         foreach (RawSpell spell in RawSpells)
         {
             Spell tempSpell = CreateNewSpell(spell); 
-            Console.WriteLine(tempSpell.Schools[0]); 
+            FullSpells.Add(tempSpell);
         }
-        
+
+        foreach (Spell spell in FullSpells)
+        {
+            Console.WriteLine(spell.ToString());
+        }
     }
 
     private Spell CreateNewSpell(RawSpell spell)

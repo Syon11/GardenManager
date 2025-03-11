@@ -4,8 +4,8 @@ namespace GardenManager.Model.Arcane;
 
 public class ModifierWord : ConfigWord
 {
-    private ArcaneModifier? Modifier { get; set; }
-    private bool IsSchoolWord { get; set; } 
+    public ArcaneModifier? Modifier { get; set; }
+    public bool IsSchoolWord { get; set; } 
     public ModifierWord
     (
         string WordText, 
