@@ -9,6 +9,7 @@ namespace GardenManager.SpellMaker;
 
 public class SpellManager
 {
+    public List<FormattedSpell> Spells { get; set; } = [];
     public List<PowerWord> PowerWords { get; set; }
     public List<EffectWord> EffectWords { get; set; }
     public List<ModifierWord> ModifierWords { get; set; }
@@ -42,6 +43,26 @@ public class SpellManager
         ImportSpellsFromJson();
     }
 
+    public SpellManager(string jsonString)
+    {
+        PowerWords = new List<PowerWord>();
+        EffectWords = new List<EffectWord>();
+        ModifierWords = new List<ModifierWord>();
+        ShapeWords = new List<ShapeWord>();
+        ArcaneEffects = new List<ArcaneEffect>();
+        ArcaneShapes = new List<ArcaneShape>();
+        ArcaneModifiers = new List<ArcaneModifier>();
+
+        Init();
+
+        ImportSpellsFromString(jsonString);
+    }
+
+    public string GetSpellsAsJson()
+    {
+        return JsonConvert.SerializeObject(Spells);
+    }
+    
     private void Init()
     {
         if (File.Exists(JsonShapes))
@@ -2082,7 +2103,7 @@ public class SpellManager
             new ShapeWord("Dhyana", "Méditation", 4, School.Divination, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Méditation"))!),
             new ShapeWord("Yatra", "Voyage astral", 4, School.Divination, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Voyage astral"))!, true),
             new ShapeWord("Ixtlapal", "Ligne", 4, School.Evocation, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Ligne"))!),
-            new ShapeWord("Tepozmecayo", "Chaine", 4, School.Evocation, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Chaine"))!, true),
+            new ShapeWord("Tepozmecayo", "Chaine", 4, School.Evocation, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Chaîne"))!, true),
             new ShapeWord("Piocombe", "Essaim", 4, School.Illusion, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Essaim"))!, true),
             new ShapeWord("Ax", "Dôme", 4, School.Necromancy, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Dôme"))!),
             new ShapeWord("Bagielevithmong", "Essaim", 4, School.Necromancy, 1, 1, 1, ArcaneShapes.FirstOrDefault(s => s.Name.Equals("Essaim"))!, true),
@@ -2147,34 +2168,34 @@ public class SpellManager
     {
         EffectWords =
         [
-            new EffectWord("Tolerentia", "Tolérence", 1, School.Abjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Endurance"))!),
-            new EffectWord("Hitta", "Dégâts", 1, School.Conjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dégâts physiques"))!),
-            new EffectWord("Anvesanam", "Détection", 1, School.Divination, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Détection de la magie"))!),
-            new EffectWord("Us", "Charme", 1, School.Enchantment, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Charme"))!),
-            new EffectWord("Tlamati", "Dégâts", 1, School.Evocation, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dégâts magiques"))!),
-            new EffectWord("Nurtale", "Dissimulation", 1, School.Illusion, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dissimulation"))!),
-            new EffectWord("Saldteloch", "Revie", 1, School.Necromancy, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Relever les morts"))!),
-            new EffectWord("Blans", "Inchangeant", 1, School.Necromancy, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Préservation"))!, true),
-            new EffectWord("Dissipatio", "Dissipation", 2, School.Abjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dissipation de la magie"))!),
-            new EffectWord("Sutura", "Suture", 2, School.Abjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Suture"))!),
-            new EffectWord("Rota", "Enchevêtrement", 2, School.Conjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Enchevêtrement"))!),
-            new EffectWord("Marka", "Réparation", 2, School.Conjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Réparation"))!),
-            new EffectWord("Purvajnanam", "Précognition", 2, School.Divination, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Précognition"))!),
-            new EffectWord("Suh", "Confusion", 2, School.Enchantment, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Confusion"))!),
-            new EffectWord("Chicahualiztli", "Force", 2, School.Evocation, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Force"))!),
-            new EffectWord("Unanwa", "Illusion", 2, School.Illusion, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Illusion"))!),
-            new EffectWord("Ucaure", "Courage", 2, School.Illusion, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Courage"))!),
-            new EffectWord("Palve", "Drain", 2, School.Necromancy, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Drain de vie"))!),
-            new EffectWord("Zizopve", "Transfusion", 2, School.Necromancy, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Transfusion"))!),
-            new EffectWord("Cincinno", "Serrure", 3, School.Abjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Serrure Magique"))!, true),
-            new EffectWord("Repgnantia", "Résistance", 3, School.Abjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Résistance à la magie"))!),
-            new EffectWord("Alfhitta", "Dégâts", 3, School.Conjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dégâts physiques majeurs"))!, true),
-            new EffectWord("Stefna", "Invocation", 3, School.Conjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Invocation"))!),
-            new EffectWord("Avagamanam", "Compréhension", 3, School.Divination, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Compréhension des langues"))!),
-            new EffectWord("Nig-sig-ga-umun", "Faiblesse", 3, School.Enchantment, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Érosion de l'Esprit"))!),
-            new EffectWord("Malafelme", "Dégâts", 3, School.Illusion, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dégâts illusoires"))!),
-            new EffectWord("Axa", "Maladie", 3, School.Necromancy, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Maladie"))!),
-            new EffectWord("Amudas", "Malédiction", 3, School.Necromancy, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Malédiction"))!),
+            new EffectWord("Tolerentia", "Tolérence", 1, School.Abjuration, 1, 0.5f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Endurance"))!),
+            new EffectWord("Hitta", "Dégâts", 1, School.Conjuration, 1, 0.5f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dégâts physiques"))!),
+            new EffectWord("Anvesanam", "Détection", 1, School.Divination, 1, 0.5f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Détection de la magie"))!),
+            new EffectWord("Us", "Charme", 1, School.Enchantment, 1, 0.5f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Charme"))!),
+            new EffectWord("Tlamati", "Dégâts", 1, School.Evocation, 1, 0.5f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dégâts magiques"))!),
+            new EffectWord("Nurtale", "Dissimulation", 1, School.Illusion, 1, 0.5f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dissimulation"))!),
+            new EffectWord("Saldteloch", "Revie", 1, School.Necromancy, 1, 0.5f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Relever les morts"))!),
+            new EffectWord("Blans", "Inchangeant", 1, School.Necromancy, 1, 0.5f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Préservation"))!, true),
+            new EffectWord("Dissipatio", "Dissipation", 2, School.Abjuration, 0.95f, 0.7f, 0.90f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dissipation de la magie"))!),
+            new EffectWord("Sutura", "Suture", 2, School.Abjuration, 0.90f, 0.7f, 0.95f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Suture"))!),
+            new EffectWord("Rota", "Enchevêtrement", 2, School.Conjuration, 1, 0.7f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Enchevêtrement"))!),
+            new EffectWord("Marka", "Réparation", 2, School.Conjuration, 0.85f, 0.7f, 0.85f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Réparation"))!),
+            new EffectWord("Purvajnanam", "Précognition", 2, School.Divination, 1.05f, 0.7f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Précognition"))!),
+            new EffectWord("Suh", "Confusion", 2, School.Enchantment, 1.10f, 1, 0.7f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Confusion"))!),
+            new EffectWord("Chicahualiztli", "Force", 2, School.Evocation, 1, 0.7f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Force"))!),
+            new EffectWord("Unanwa", "Illusion", 2, School.Illusion, 1, 0.7f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Illusion"))!),
+            new EffectWord("Ucaure", "Courage", 2, School.Illusion, 1.10f, 0.7f, 0.9f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Courage"))!),
+            new EffectWord("Palve", "Drain", 2, School.Necromancy, 0.95f, 0.7f, 1.05f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Drain de vie"))!),
+            new EffectWord("Zizopve", "Transfusion", 2, School.Necromancy, 1.05f, 0.7f, 1.20f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Transfusion"))!),
+            new EffectWord("Cincinno", "Serrure", 3, School.Abjuration, 0.70f, 0.9f, 0.75f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Serrure Magique"))!, true),
+            new EffectWord("Repgnantia", "Résistance", 3, School.Abjuration, 1f, 0.9f, 1.5f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Résistance à la magie"))!),
+            new EffectWord("Alfhitta", "Dégâts", 3, School.Conjuration, 1.2f, 0.9f, 0.9f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dégâts physiques majeurs"))!, true),
+            new EffectWord("Stefna", "Invocation", 3, School.Conjuration, 1.1f, 0.9f, 0.9f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Invocation"))!),
+            new EffectWord("Avagamanam", "Compréhension", 3, School.Divination, 1, 0.9f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Compréhension des langues"))!),
+            new EffectWord("Nig-sig-ga-umun", "Faiblesse", 3, School.Enchantment, 0.85f, 0.9f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Érosion de l'Esprit"))!),
+            new EffectWord("Malafelme", "Dégâts", 3, School.Illusion, 1.2f, 0.9f, 1.1f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Dégâts illusoires"))!),
+            new EffectWord("Axa", "Maladie", 3, School.Necromancy, 0.95f, 0.9f, 1.05f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Maladie"))!),
+            new EffectWord("Amudas", "Malédiction", 3, School.Necromancy, 1.05f, 0.9f, 0.8f, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Malédiction"))!),
             new EffectWord("Armatura", "Armure de Mage", 4, School.Abjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Armure de mage"))!),
             new EffectWord("Paries", "Mur", 4, School.Abjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Mur de vent"))!),
             new EffectWord("Bjooa", "Conjuration", 4, School.Conjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Conjuration de ressources"))!, true),
@@ -2186,13 +2207,13 @@ public class SpellManager
             new EffectWord("Caure", "Peur", 4, School.Illusion, 1, 1 ,1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Peur"))!),
             new EffectWord("Furu", "Mensonge", 4, School.Illusion, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Mensonge"))!),
             new EffectWord("Atraah", "Armure", 4, School.Necromancy, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Armure d'os"))!),
-            new EffectWord("Palzong", "Explosion", 4, School.Necromancy, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Explosion de cadavres"))!, true),
-            new EffectWord("Sjon", "Fixation", 5, School.Conjuration, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Fixation"))!),
-            new EffectWord("Punarjanma", "Réincarnation", 5, School.Divination, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Réincarnation"))!),
-            new EffectWord("An-ta-gal", "Domination", 5, School.Enchantment, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Domination"))!),
-            new EffectWord("Mesmo", "Rage", 5, School.Evocation, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Rage des elements"))!),
-            new EffectWord("Ulcasima", "Hallucination", 5, School.Illusion, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Hallucination"))!),
-            new EffectWord("Drixugeg", "Flétrissement", 5, School.Necromancy, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Flétrissement"))!)
+            new EffectWord("Palzong", "Explosion", 4, School.Necromancy, 1, 1, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Explosion de Cadavres"))!, true),
+            new EffectWord("Sjon", "Fixation", 5, School.Conjuration, 1, 1.2f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Fixation"))!),
+            new EffectWord("Punarjanma", "Réincarnation", 5, School.Divination, 1, 1.2f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Réincarnation"))!),
+            new EffectWord("An-ta-gal", "Domination", 5, School.Enchantment, 1, 1.2f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Domination"))!),
+            new EffectWord("Mesmo", "Rage", 5, School.Evocation, 1, 1.2f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Rage des elements"))!),
+            new EffectWord("Ulcasima", "Hallucination", 5, School.Illusion, 1, 1.2f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Hallucination"))!),
+            new EffectWord("Drixugeg", "Flétrissement", 5, School.Necromancy, 1, 1.2f, 1, ArcaneEffects.FirstOrDefault(s => s.Name.Equals("Flétrissement"))!)
         ];
         
         SaveEffectWordsToFile();
@@ -2407,13 +2428,24 @@ public class SpellManager
         decimal potentiaSum = 0;
         decimal arcainumSum = 0;
         decimal fluxSum = 0;
+        
+        /*
         decimal rndPotentiaSum;
         decimal rndArcainumSum;
         decimal rndFluxSum;
         List<double> rndPotentia = new List<double>();
         List<double> rndArcainum = new List<double>();
         List<double> rndFlux = new List<double>();
+        */
         
+        for (int i = 0; i < reducedList.Count; i++)
+        {
+            reducedList[i].Potentia *= Math.Round((decimal)(random.NextDouble() * (1.4 - 0.6) + 0.6), 2);
+            reducedList[i].Arcainum *= Math.Round((decimal)(random.NextDouble() * (1.4 - 0.6) + 0.6), 2);
+            reducedList[i].Flux *= Math.Round((decimal)(random.NextDouble() * (1.4 - 0.6) + 0.6), 2);
+        }
+        
+        /*
         foreach (var word in reducedList)
         {
             potentiaSum += word.Potentia;
@@ -2423,7 +2455,7 @@ public class SpellManager
             rndArcainum.Add(random.NextDouble() * (1.3 - 0.7) + 0.7);
             rndFlux.Add(random.NextDouble() * (1.3 - 0.7) + 0.7);
         }
-
+        
         rndPotentiaSum = (decimal)rndPotentia.Sum();
         rndArcainumSum = (decimal)rndArcainum.Sum();
         rndFluxSum = (decimal)rndFlux.Sum();
@@ -2434,6 +2466,7 @@ public class SpellManager
             reducedList[i].Arcainum = Math.Round((decimal)rndArcainum[i] / rndArcainumSum * arcainumSum, 2);
             reducedList[i].Flux = Math.Round((decimal)rndFlux[i] / rndFluxSum * fluxSum, 2);
         }
+        */
     }
 
     private void ImportSpellsFromJson()
@@ -2446,13 +2479,18 @@ public class SpellManager
             Spell tempSpell = CreateNewSpell(spell); 
             FullSpells.Add(tempSpell);
         }
-
-        foreach (Spell spell in FullSpells)
-        {
-            Console.WriteLine(spell.ToString());
-        }
     }
 
+    private void ImportSpellsFromString(string json)
+    {
+        List<RawSpell> RawSpells = JsonConvert.DeserializeObject<List<RawSpell>>(json);
+        foreach (RawSpell spell in RawSpells)
+        {
+            Spell tempSpell = CreateNewSpell(spell);
+            Spells.Add(new FormattedSpell(tempSpell));
+        }
+    }
+    
     private Spell CreateNewSpell(RawSpell spell)
     {
         Spell newSpell = new Spell();
@@ -2470,6 +2508,9 @@ public class SpellManager
         {
             newSpell.AdverseEffect = RandomizeAdverseEffect();
             newSpell.AdverseEffectReason = ex.Message;
+            newSpell.Shape = new ArcaneShape("None", [], ["Spell failure // No shape"]);
+            newSpell.ShapeTier = 0;
+            newSpell.SpellDescription = $"{newSpell.AdverseEffect}: {newSpell.AdverseEffectReason}";
         }
         
         return newSpell;

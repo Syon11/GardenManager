@@ -37,26 +37,41 @@ public class SpellSockets
 
     private void HandleClientRequest(Socket clientSocket)
     {
+        string spellsJson = String.Empty;
         var buffer = new byte[1024];
         // Avons-nous des données? clientSocket.Available
         var bytesRead = clientSocket.Receive(buffer);
         if (bytesRead > 0)
         {
             var message = Encoding.UTF8.GetString(buffer);
-            
-            Console.WriteLine(message);
-            
-            const string html = "<h1>Hello world!</h1>";
-            
-            var sb = new StringBuilder();
+            try
+            {
+                var json = message.Substring(message.IndexOf('['));
+                SpellManager spellManager = new SpellManager(json); 
+                spellsJson = spellManager.GetSpellsAsJson();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            StringBuilder sb = new StringBuilder();
             sb.AppendLine("HTTP/1.1 200 OK");
-            sb.AppendLine("Content-Type: text/html");
-            sb.AppendLine($"Content-Length: {html.Length}");
+            sb.AppendLine("Content-Type: application/json");
+            sb.AppendLine($"Content-Length: {message.Length}");
             sb.AppendLine();
-            sb.AppendLine(html);
-
+            sb.AppendLine(spellsJson);
+            
             clientSocket.Send(Encoding.UTF8.GetBytes(sb.ToString()));
+
+            if (string.IsNullOrEmpty(spellsJson))
+            {
+                Console.WriteLine("Malformed JSON received");
+            }
+            Console.WriteLine($"Received {spellsJson}");
+            
         }
+
+        clientSocket.Close();
     }
     
 }

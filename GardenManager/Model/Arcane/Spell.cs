@@ -8,6 +8,9 @@ namespace GardenManager.Model.Arcane;
 
 public class Spell
 {
+    public decimal PotentiaMultiplier { get; set; } = 1.0m;
+    public decimal ArcainumMultiplier { get; set; } = 1.0m;
+    public decimal FluxMultiplier { get; set; } = 1.0m;
     public int SpellLevel { get; set; }
     public int ManaCost { get; set; }
     public int HealthCost { get; set; } = 0;
@@ -16,13 +19,16 @@ public class Spell
     public List<Word> Incantation { get; set; } = [];
     public List<ArcaneEffect> Effects { get; set; } = [];
     public List<int> EffectTiers { get; set; } = [];
+    public List<ArcaneValues> EffectValues { get; set; } = [];
     public List<School> Schools { get; set; } = [];
     public ShapeWord ShapeWord { get; set; }
     public ArcaneShape Shape { get; set; }
-    public int ShapeTier { get; set; }
+    public int ShapeTier { get; set; } = 0;
+    public ArcaneValues ShapeValues { get; set; }
     public List<ArcaneModifier> Modifiers { get; set; } = [];
     public List<ModifierWord> ModifierWords { get; set; } = [];
     public List<int> ModifierTiers { get; set; } = [];
+    public List<ArcaneValues> ModifierValues { get; set; } = [];
     public decimal TotalPotentia { get; set; } = 0;
     public decimal TotalArcainum { get; set; } = 0;
     public decimal TotalFlux { get; set; } = 0;
@@ -54,20 +60,57 @@ public class Spell
         List<int> modifierStart = [];
 
         shapeStart = DetermineSchools();
+        CheckIfPartOfSchool();
         effectStart = DetermineShape(shapeStart, shapeWords, powerWords);
         DetermineEffect(effectStart, 0, effectWords, powerWords);
         DetermineModifierStarts(modifierStart, modifierWords);
         for (int i = 0; i < modifierStart.Count; i++)
         {
-            ModifierTiers.Add(DetermineModifierTier(Modifiers[i], modifierStart[i], i, powerWords));
+            DetermineModifierTier(Modifiers[i], modifierStart[i], i, powerWords);
         }
-        EnableModifiers();
         DetermineCombinationEffect(effectWords, powerWords);
+        CalculateValues();
+        EnableModifiers();
         DetermineManaCost();
         RecalculateSacrificialCost();
         SetDescription();
     }
 
+    private void CheckIfPartOfSchool()
+    {
+        foreach (Word word in Incantation)
+        {
+            if (Schools.Contains(word.School)) continue;
+            throw new NotPartOfSelectedSchoolsException($"Selected word: {word.WordText} is not part of selected schools.");
+        }
+    }
+
+    private void CalculateValues()
+    {
+        ShapeValues.Potentia *= PotentiaMultiplier;
+        ShapeValues.Arcainum *= ArcainumMultiplier;
+        ShapeValues.Flux *= FluxMultiplier;
+        ShapeTier = TestShapeThresholds(ShapeValues.Potentia);
+        for (int i = 0; i < Effects.Count; i++)
+        {
+            EffectValues[i].Potentia *= PotentiaMultiplier;
+            EffectValues[i].Arcainum *= ArcainumMultiplier;
+            EffectValues[i].Flux *= FluxMultiplier;
+            EffectTiers.Add(TestEffectThresholds(i, EffectValues[i].Potentia));
+        }
+        for (int i = 0; i < Modifiers.Count; i++)
+        {
+            ModifierValues[i].Potentia *= PotentiaMultiplier;
+            ModifierValues[i].Arcainum *= ArcainumMultiplier;
+            ModifierValues[i].Flux *= FluxMultiplier;
+            ModifierTiers.Add(TestModifierThreshold(Modifiers[i], ModifierValues[i].Potentia));
+        }
+        TotalPotentia = ModifierValues.Sum(x => x.Potentia) + EffectValues.Sum(x => x.Potentia) + ShapeValues.Potentia;
+        TotalArcainum = ModifierValues.Sum(x => x.Arcainum) + EffectValues.Sum(x => x.Arcainum) + ShapeValues.Arcainum;
+        TotalFlux = ModifierValues.Sum(x => x.Flux) + EffectValues.Sum(x => x.Flux) + ShapeValues.Flux;
+    }
+    
+    
     private int DetermineSchools()
     {
         int shapeStart = -1;
@@ -84,6 +127,7 @@ public class Spell
                 break;
             }
             Schools.Add(Incantation[i].School);
+            FluxMultiplier += 0.20m;
             if (Schools.Count > 3)
             {
                 throw new TooManySchoolsException("No spell can contain more than three school words");
@@ -95,13 +139,16 @@ public class Spell
     private int DetermineShape(int shapeStart, List<ShapeWord> shapeWords, List<PowerWord> powerWords)
     {
         int effectStart = -1;
-        decimal shapePotentia = 0;
         if (shapeStart == -1 || Incantation[shapeStart].GetType() != typeof(ShapeWord))
         {
             throw new ShapeRequiredException("Shape is required after the school words");
         }
         ShapeWord = shapeWords.Find(w => w.WordText == Incantation[shapeStart].WordText)!;
         Shape = ShapeWord.Shape;
+        PotentiaMultiplier += (decimal)(ShapeWord.PotentiaEffect - 1);
+        ArcainumMultiplier += (decimal)(ShapeWord.ArcainumEffect - 1);
+        FluxMultiplier += (decimal)(ShapeWord.FluxEffect - 1);
+        ShapeValues = new ArcaneValues();
         for (int i = shapeStart + 1; i < Incantation.Count; i++)
         {
             if (Incantation[i].GetType() != typeof(PowerWord))
@@ -110,12 +157,11 @@ public class Spell
                 break;
             }
             PowerWord pw = powerWords.Find(w => w.WordText == Incantation[i].WordText)!;
-            shapePotentia += pw.Potentia;
-            TotalPotentia += pw.Potentia;
-            TotalArcainum += pw.Arcainum;
-            TotalFlux += pw.Flux;
+            ShapeValues.Potentia += pw.Potentia;
+            ShapeValues.Flux += pw.Flux;
+            ShapeValues.Arcainum += pw.Arcainum;
         }
-        ShapeTier = TestShapeThresholds(shapePotentia);
+        
         return effectStart;
     }
 
@@ -136,28 +182,28 @@ public class Spell
     private int DetermineEffect(int effectStart, int effectIndex, List<EffectWord> effectWords, List<PowerWord> powerWords)
     {
         int modStart = -1;
-        decimal effectPotentia = 0;
         if (effectStart == -1 || Incantation[effectStart].GetType() != typeof(EffectWord))
         {
             throw new EffectRequiredException("Effect is required after the shape word and it's power words");
         }
         EffectWord effect = effectWords.Find(e => e.WordText == Incantation[effectStart].WordText)!;
         Effects.Add(effect.Effect);
+        EffectValues.Add(new ArcaneValues());
+        PotentiaMultiplier += (decimal)(effect.PotentiaEffect - 1);
+        ArcainumMultiplier += (decimal)(effect.ArcainumEffect - 1);
+        FluxMultiplier += (decimal)(effect.FluxEffect - 1);
         for (int i = effectStart + 1; i < Incantation.Count; i++)
         {
             if (Incantation[i].GetType() != typeof(PowerWord))
             {
-                EffectTiers.Add(TestEffectThresholds(effectIndex, effectPotentia));
                 modStart = i;
                 return modStart;
             }
             PowerWord pw = powerWords.Find(e => e.WordText == Incantation[i].WordText)!;
-            effectPotentia += pw.Potentia;
-            TotalPotentia += pw.Potentia;
-            TotalArcainum += pw.Arcainum;
-            TotalFlux += pw.Flux;
+            EffectValues[effectIndex].Potentia += pw.Potentia;
+            EffectValues[effectIndex].Arcainum += pw.Arcainum;
+            EffectValues[effectIndex].Flux += pw.Flux;
         }
-        EffectTiers.Add(TestEffectThresholds(effectIndex, effectPotentia));
         return modStart;
     }
 
@@ -186,27 +232,29 @@ public class Spell
                 continue;
             ModifierWords.Add(mod);
             Modifiers.Add(mod.Modifier!);
+            PotentiaMultiplier += (decimal)(mod.PotentiaEffect - 1);
+            ArcainumMultiplier += (decimal)(mod.ArcainumEffect - 1);
+            FluxMultiplier += (decimal)(mod.FluxEffect - 1);
             modifierStart.Add(i);
         }
     }
 
-    private int DetermineModifierTier(ArcaneModifier currentModifier, int modifierIndexInIncantation, int modifierIndexInList, List<PowerWord> powerWords)
+    private void DetermineModifierTier(ArcaneModifier currentModifier, int modifierIndexInIncantation, int modifierIndexInList, List<PowerWord> powerWords)
     {
         decimal modifierPotentia = 0;
+        ModifierValues.Add(new ArcaneValues());
         for (int i = modifierIndexInIncantation + 1; i < Incantation.Count; i++)
         {
             if (Incantation[i].GetType() != typeof(PowerWord))
             {
-                return TestModifierThreshold(currentModifier, modifierPotentia);
+                return;
             }
             PowerWord pw = powerWords.Find(e => e.WordText == Incantation[i].WordText)!;
-            modifierPotentia += pw.Potentia;
-            TotalPotentia += pw.Potentia;
-            TotalArcainum += pw.Arcainum;
-            TotalFlux += pw.Flux;
+            
+            ModifierValues[modifierIndexInList].Potentia += pw.Potentia;
+            ModifierValues[modifierIndexInList].Arcainum += pw.Arcainum;
+            ModifierValues[modifierIndexInList].Flux += pw.Flux;
         }
-
-        return TestModifierThreshold(currentModifier, modifierPotentia);
     }
 
     private int TestModifierThreshold(ArcaneModifier modifier,decimal modifierPotentia)
@@ -239,8 +287,7 @@ public class Spell
         foreach (ArcaneModifier mod in Modifiers)
         {
             int maxTiers = mod.Thresholds.Count;
-            int currentTier;
-            currentTier = ModifierTiers[iter] >= maxTiers ? maxTiers - 1 : ModifierTiers[iter];
+            var currentTier = ModifierTiers[iter] >= maxTiers ? maxTiers - 1 : ModifierTiers[iter];
             
             switch (mod.Name)
             {
@@ -258,31 +305,61 @@ public class Spell
                     ModifierDescriptions.Append($"Distance: ");
                     break;
                 case "ElementalFeu" :
+                    if (IsElemental)
+                    {
+                        ModifierDescriptions.Clear();
+                        throw new TooManyElementsException("Only one element can be selected.");
+                    }
                     IsElemental = true;
                     Element = Enums.Element.Fire;
                     ModifierDescriptions.Append($"Elemental: ");
                     break;
                 case "ElementalGlace" :
+                    if (IsElemental)
+                    {
+                        ModifierDescriptions.Clear();
+                        throw new TooManyElementsException("Only one element can be selected.");
+                    }
                     IsElemental = true;
                     Element = Enums.Element.Ice;
                     ModifierDescriptions.Append($"Elemental: ");
                     break;
                 case "ElementalFoudre" :
+                    if (IsElemental)
+                    {
+                        ModifierDescriptions.Clear();
+                        throw new TooManyElementsException("Only one element can be selected.");
+                    }
                     IsElemental = true;
                     Element = Enums.Element.Thunder;
                     ModifierDescriptions.Append($"Elemental: ");
                     break;
                 case "ElementalAcide" :
+                    if (IsElemental)
+                    {
+                        ModifierDescriptions.Clear();
+                        throw new TooManyElementsException("Only one element can be selected.");
+                    }
                     IsElemental = true;
                     Element = Enums.Element.Acid;
                     ModifierDescriptions.Append($"Elemental: ");
                     break;
                 case "ElementalBeni" :
+                    if (IsElemental)
+                    {
+                        ModifierDescriptions.Clear();
+                        throw new TooManyElementsException("Only one element can be selected.");
+                    }
                     IsElemental = true;
                     Element = Enums.Element.Holy;
                     ModifierDescriptions.Append($"Elemental: ");
                     break;
                 case "ElementalMaudit" :
+                    if (IsElemental)
+                    {
+                        ModifierDescriptions.Clear();
+                        throw new TooManyElementsException("Only one element can be selected.");
+                    }
                     IsElemental = true;
                     Element = Enums.Element.Unholy;
                     ModifierDescriptions.Append($"Elemental: ");
@@ -358,8 +435,8 @@ public class Spell
             {
                 if (effect.HasElementalEffects && IsElemental)
                 {
-                    sb.Append(GetElementalDescriptors(effect, Element, iter, effect.ScalesOnElements, true));
-
+                    sb.AppendLine(GetElementalDescriptors(effect, Element, iter, effect.ScalesOnElements, true));
+                    continue;
                 }
 
                 if (effect.InvertedEffects is { Count: > 0})
@@ -374,7 +451,8 @@ public class Spell
 
             if (effect.HasElementalEffects && IsElemental)
             {
-                sb.Append(GetElementalDescriptors(effect, Element, iter, effect.ScalesOnElements));
+                sb.AppendLine(GetElementalDescriptors(effect, Element, iter, effect.ScalesOnElements));
+                continue;
             }
 
             sb.AppendLine(effect.DescriptionAtThresholds.Count > EffectTiers[iter]
@@ -450,7 +528,7 @@ public class Spell
                                 ? effect.InvertedThunderEffects[GetElementalModificatorTier(element)]
                                 : effect.InvertedThunderEffects[effect.InvertedThunderEffects.Count - 1];
                         }
-                         return effect.InvertedThunderEffects.Count > EffectTiers[effectIterator] ? effect.InvertedThunderEffects[EffectTiers[effectIterator]] : effect.InvertedThunderEffects[effect.InvertedThunderEffects.Count - 1];
+                        return effect.InvertedThunderEffects.Count > EffectTiers[effectIterator] ? effect.InvertedThunderEffects[EffectTiers[effectIterator]] : effect.InvertedThunderEffects[effect.InvertedThunderEffects.Count - 1];
                     }
                     throw new EffectAndModifierIncompatibilityException(
                         "Modificateur \"Elemental-Foudre\" incompatible avec la version inversée de cet effet!"); 

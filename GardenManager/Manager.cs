@@ -42,7 +42,7 @@ public class Manager
             {
                 CD.DisplayMainMenu(CurrentUser);
                 string? input = Console.ReadLine();
-                while (string.IsNullOrEmpty(input) || !InputValidator.ValidateEntryWithRegex(input!, @"^[1-6]$"))
+                while (string.IsNullOrEmpty(input) || !InputValidator.ValidateEntryWithRegex(input!, @"^[1-7]$"))
                 {
                     Console.Write("Invalid entry. Try again: ");
                     input = Console.ReadLine();
@@ -66,6 +66,9 @@ public class Manager
                         HandleSpellManagement();
                         break;
                     case "6":
+                        SpellManagementServerStart();
+                        break;
+                    case "7":
                         inMainMenu = false;
                         break;
                 }
@@ -123,6 +126,11 @@ public class Manager
     {
         SpellManager manager = new SpellManager();
         Console.ReadLine();
+    }
+
+    private void SpellManagementServerStart()
+    {
+        SpellSockets sockets = new SpellSockets();
     }
     
     private void HandlePlantManagement()
