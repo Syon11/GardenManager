@@ -6,8 +6,8 @@ public class SkillInitiator
 {
     public List<Competence> MartialT1 { get; set; }
     public List<Competence> MartialT2 { get; set; }
-    public List<Competence> ScoundrelT1 { get; set; }
-    public List<Competence> ScoundrelT2 { get; set; }
+    public List<Competence> SpecialistT1 { get; set; }
+    public List<Competence> SpecialistT2 { get; set; }
     public List<Competence> ArcaneT1 { get; set; }
     public List<Competence> ArcaneT2 { get; set; }
     public List<Competence> WeaponMasterT3 { get; set; }
@@ -133,14 +133,14 @@ public class SkillInitiator
                         "La réparation peut être effectuée en 3 secondes et en combat (l’utilisateur doit mimer l’action).")
                 ]),
             new Competence(6, "Poigne de fer", "L'utilisateur peut, une fois par combat, résister à un désarmement.",
-            [
-                new Variant(
-                    "De plus, une fois par scénario, l'utilisateur peut être immunisé aux désarmements durant toute la durée d’un combat. L’utilisation de la compétence doit être déclarée par l’utilisateur."),
-                new Variant(
-                    "L'utilisateur peut utiliser « Poigne de fer » une fois de plus par combat pour un total de 2 fois."),
-                new Variant(
-                    "En addition, 3 fois par scénario, le détenteur de la compétence « Poigne de fer » peut décider de ne pas relâcher sa prise sur un objet tenu dans sa main, peu importe l'effet physique qui lui ferait lâcher/donner l'objet en question. Cette résistance fonctionne aussi sur les effets mentaux.")
-            ],
+                [
+                    new Variant(
+                        "De plus, une fois par scénario, l'utilisateur peut être immunisé aux désarmements durant toute la durée d’un combat. L’utilisation de la compétence doit être déclarée par l’utilisateur."),
+                    new Variant(
+                        "L'utilisateur peut utiliser « Poigne de fer » une fois de plus par combat pour un total de 2 fois."),
+                    new Variant(
+                        "En addition, 3 fois par scénario, le détenteur de la compétence « Poigne de fer » peut décider de ne pas relâcher sa prise sur un objet tenu dans sa main, peu importe l'effet physique qui lui ferait lâcher/donner l'objet en question. Cette résistance fonctionne aussi sur les effets mentaux.")
+                ],
                 "« Poigne de fer, [Désarmement (Variante 1)] »"),
             new Competence(7, "Premiers soins",
                 "Permet à l'utilisateur de consommer un kit de premiers soins afin de stabiliser une personne agonisante. L'application prend 2 minutes et remet le joueur à 1 PV. Cette habileté donne aussi au joueur 3 kits de premiers soins au début du premier scénario suivant l’obtention de la compétence.",
@@ -545,10 +545,445 @@ public class SkillInitiator
         ];
         TacticianT4 =
         [
-            
+            new Competence(49, "Conscription",
+                "L’utilisateur peut, durant un combat, obliger un (1) PNJ neutre ou allié de se battre à ses côtés. Ce personnage va aider l’utilisateur au meilleur de ses capacités. À noter que certains PNJ peuvent résister à cet effet. De plus, si celui-ci croit que la bataille est perdue d’avance et que les joueurs n’ont aucune chance, il peut refuser de participer.",
+                [
+                    new Variant("Le personnage recruté pourra effectuer des dégâts de +1 (base)."),
+                    new Variant("Le personnage recruté aura 5 PV de plus. "),
+                    new Variant("Le personnage recruté sera plus enclin à utiliser ses objets.")
+                ],
+                "Citer « Conscription [Effet de variante] »"),
+            new Competence(50, "Héroïsme",
+                "L’utilisateur peut, une fois par scénario, immuniser une cible à tous les effets (incluant les malédictions, bris, désarmements, etc...) pendant la durée d'un combat. L’utilisateur ne peut pas utiliser cette compétence sur lui-même. Si un effet perdure après le combat, il revient. Les effets déjà actifs avant l’utilisation de la compétence Héroïsme sont mis sur pause pendant la durée de la compétence. Note : L'agonie et la mort sont les seules exceptions à cette compétence.",
+                [
+                    new Variant("Bonus de 5 PVT à la cible."),
+                    new Variant("Bonus de la moitié des PM manquants de la cible."),
+                    new Variant(
+                        "Lorsque la compétence est utilisée, l’utilisateur a une (1) résistance au prochain effet lancé sur lui.")
+                ],
+                "Citer  « Héroïsme, immunité à tous les effets »."),
+            new Competence(51, "Jeux de guerre",
+                "L’utilisateur peut, une fois par jour, recharger 5 points de tactique suite à une partie complète d'un jeu de guerre (échecs, go, Risk, etc.) avec un adversaire au jeu.",
+                [
+                    new Variant(
+                        "L’utilisateur peut poser une question à son adversaire par rapport à son personnage ou ses intentions. L’adversaire doit répondre de manière honnête et ne sait pas qu'il a été questionné."),
+                    new Variant(
+                        "L’utilisateur n’a plus besoin d’un adversaire et peut jouer seul. Note : Une partie doit quand même être complétée afin d'en obtenir les bénéfices."),
+                    new Variant(
+                        "À la place d'un jeu de guerre, l'utilisateur peut passer 15 minutes à étudier une carte afin d'avoir les bénéfices de cette compétence, l’utilisateur doit avoir un compagnon de conversation pendant la période complète.")
+                ]),
+            new Competence(52, "Tactique supérieure",
+                "L’utilisateur a maintenant accès aux tactiques Tiers 2 ET peut se donner les bénéfices d’une tactique Tiers 1 gratuitement lorsqu’il active les tactiques de son escouade.",
+                [
+                    new Variant(
+                        "Toutes les tactiques Tiers 1 assignées à l'escouade deviennent en durée « par combat » sans coût additionnel."),
+                    new Variant("L'utilisateur obtient un bonus de  +3 points de tactique."),
+                    new Variant("L'utilisateur obtient un bonus de +1 membre maximum dans son escouade.")
+                ])
         ];
-
+        SamuraiT3 =
+        [
+            new Competence(53, "Iai",
+                "L’utilisateur peut charger sa prochaine attaque avec une arme (excluant les armes à feu) en utilisant ses PM. L’utilisateur doit charger sa mana pendant deux secondes avant de l’effectuer.\nEn dépensant 1 PM : La frappe devient magique. \nEn dépensant 2 PM : La frappe fait +1 dégât (base) ou brise l’arme/bouclier qui bloque le coup.",
+                [
+                    new Variant(
+                        "L'utilisateur a la possibilité d'investir 3 PMs dans une frappe pour faire une attaque de  +2 dégâts magiques (actif)."),
+                    new Variant(
+                        "Si l'utilisateur investit 1 PM, il peut décider de frapper dans l’élément suivant : feu, glace, foudre ou acide."),
+                    new Variant(
+                        "L'utilisateur peut payer un supplément de +1 PM sur l'option 1 et 2 pour que le bonus affecte les 3 prochaines frappes.")
+                ],
+                "Citer  « Perce-armure, [nombre de] dégâts magiques ou brise-arme/brise-bouclier »"),
+            new Competence(54, "Méditation du Guerrier",
+                "L'utilisateur peut méditer afin de régénérer sa mana. Il récupère ainsi 1 PM par 3 minutes de méditation. La régénération de mana de cette compétence ne fonctionne pas si l'utilisateur a 5 PM Max et plus.",
+                [
+                    new Variant("L'utilisateur gagne +1 PM Max. "),
+                    new Variant(
+                        "L'utilisateur peut inviter un autre joueur dans sa médiation. Ce dernier bénéficiera du bonus de régénération. L’invité ne peut pas récupérer de PMs s’il possède 5 PM et plus."),
+                    new Variant(
+                        "La régénération de mana de cette compétence ne fonctionne pas si l'utilisateur a 7 PM ou plus plutôt que 5, mais il régénère à un rythme de 1 PM par 5 minutes. ")
+                ]),
+            new Competence(55, "Renforcement d’arme",
+                "L'utilisateur peut, en jouant la scène pendant 2 minutes, réserver 3 PM Max afin de renforcer une de ses armes. Renforcer une deuxième arme coûte le double, une troisième, le triple, etc.  L'arme renforcée peut alors résister à une (1) tentative de brise-arme par combat. Pour retirer la réservation et récupérer ses PM Max, l’utilisateur devra méditer durant 2 minutes.",
+                [
+                    new Variant("L'arme peut résister à 2 brise-arme par combat."),
+                    new Variant("La réserve coûte 2 PM Max plutôt que 3."),
+                    new Variant(
+                        "Le joueur peut, lorsqu’il attaque avec son arme renforcée, déclarer des dégâts magiques.")
+                ]),
+            new Competence(56, "Renforcement d’armure",
+                "L'utilisateur peut, en jouant la scène pendant 2 minutes, réserver 3 max PM afin de renforcer son armure. L'armure renforcée fait bénéficier à l’utilisateur d’une utilisation de la compétence Presquive (Variante 2) par combat. Pour retirer la réservation, l’utilisateur devra méditer durant 2 minutes.",
+                [
+                    new Variant(
+                        "La réserve coûte 4 PMs Max plutôt que 3, mais permet deux utilisations ‘’Presquive Variante 2” par combat."),
+                    new Variant("La réserve coûte 2 PMs Max plutôt que 3."),
+                    new Variant(
+                        "De plus, l’utilisateur peut, une fois par combat, réduire de 3 les dégâts du PREMIER sort à dégâts reçu lors de l'affrontement. Toutefois, les autres effets du sort fonctionnent tout de même.")
+                ])
+        ];
+        SamuraiT4 =
+        [
+            new Competence(57, "Arme scintillante",
+                "L'utilisateur peut, en prenant 2 minutes de jeu, réserver 4 PM Max pour rendre son arme scintillante. Celle-ci pourra alors percer les armures avec chacun de ses coups. Pour retirer la réservation et récupérer ses PM Max, l’utilisateur devra méditer durant 2 minutes.  Note : Cette compétence ne peut pas être appliquée à une arme à feu.",
+                [
+                    new Variant(
+                        "De plus, l’utilisateur peut, trois fois par combat, lorsqu’un coup touche un bouclier, déclarer sa frappe comme « Imparable »."),
+                    new Variant(
+                        "L'utilisateur peut consommer ses PM réservés, terminant la compétence, pour ce combat afin de donner l'effet disjonction de manière instantanée à la touche."),
+                    new Variant("L’utilisateur effectue des dégâts bénis avec son arme scintillante.")
+                ],
+                "Citer « Perce armure [Imparable (si variante 1)][Disjonction (si variante 2)][Béni (si variante 3)] »"),
+            new Competence(58, "Force de volonté",
+                "L'utilisateur peut méditer afin de régénérer sa vie au coût de 1 PM pour 1 PV par 3 minutes de méditation. Cette compétence ne fonctionne pas si l'utilisateur a plus de son maximum de PVT alloués en PV.",
+                [
+                    new Variant(
+                        "De plus, suivant une méditation où l’utilisateur a atteint son maximum de régénération possible, il obtient 3 PVT jusqu’à la fin du prochain combat."),
+                    new Variant(
+                        "L'utilisateur peut inviter un autre joueur dans sa méditation. Ce dernier va aussi bénéficier du bonus de régénération, tant qu'il possède la mana nécessaire. L'invité ne régénère qu'au maximum de SES max PVT."),
+                    new Variant("L'utilisateur gagne +2 Max PVT.")
+                ]),
+            new Competence(59, "Onde de choc",
+                "L'utilisateur peut investir 2 PM afin d'effectuer une attaque à une distance maximale de 15 pieds avec son arme de mêlée. Cette attaque peut être combinée avec les effets de la compétence Tiers 3 Iai.",
+                [
+                    new Variant(
+                        "L’utilisateur peut, une fois par combat, faire plutôt un cône de 10 pieds (90 degrés) devant lui. Si combinée avec Iai, même si plusieurs cibles sont touchées, la compétence Iai n’est payée qu’une fois."),
+                    new Variant(
+                        "L’utilisateur peut, une fois par combat, plutôt faire un cercle autour de lui (360 degrés) à 5 pieds de rayon. Si combinée avec Iai, même si plusieurs cibles sont touchées, la compétence Iai n’est payée qu’une fois."),
+                    new Variant("L’onde de choc de base (15 pieds) effectue +1 dégât (base), mais coûte 2 PM de plus.")
+                ],
+                "Citer « Onde de choc, [nombre de] dégâts »"),
+            new Competence(60, "Réserve vitale",
+                "L'utilisateur peut, en prenant 2 minutes de jeu, réserver une de ses compétences sur ses PV Max plutôt que ses PM Max. Pour retirer la réservation et récupérer ses PV Max, l’utilisateur devra méditer durant 2 minutes.",
+                [
+                    new Variant("L'utilisateur obtient un bonus de +1 PV max."),
+                    new Variant(
+                        "Si l'utilisateur tombe au combat, il peut résilier sa réserve afin de survivre. Par contre, il ne lui reste qu’un (1) PV."),
+                    new Variant(
+                        "De plus, l’utilisateur peut, une fois par combat, obtenir sa réserve de PV Max en PVT.")
+                ])
+        ];
+        GunnerT3 =
+        [
+            new Competence(61, "Spécialisation d’armes à feu standard",
+                "Le premier tir que l'utilisateur effectue dans un combat avec une arme à feu standard obtient un bonus de  +2 dégâts (Actif).",
+                [
+                    new Variant(
+                        "Au lieu de la compétence initiale, les 3 premiers tirs effectués dans un combat font +1 dégât (Actif)."),
+                    new Variant(
+                        "Si l'utilisateur a une arme à feu standard dans une main et une autre arme dans l'autre ET qu'il est victime d'un « brise-arme » ou d'un « désarmement », l'utilisateur peut décider laquelle de ses armes est touchée."),
+                    new Variant(
+                        "Au lieu de la compétence initiale, l’utilisateur peut choisir à quel moment du combat utiliser son bonus.")
+                ]),
+            new Competence(62, "Spécialisation du pistolet magique",
+                "L'utilisateur peut maintenant enregistrer un pistolet magique. Plutôt que de coûter des munitions et de la poudre, le pistolet magique doit être enregistré avec un cristal de mana. La qualité du cristal de mana définit le nombre de charges magiques (mineur = 2 charges, intermédiaire = 5 charges,  majeur = 10 charges). Au coût d’une charge, l'utilisateur peut changer l’élément de son pistolet magique dans l’un des éléments suivants : Magique, Feu, Glace, Électrique et Acide. Les dégâts faits par le pistolet magique seront ceux de l'élément du pistolet.",
+                [
+                    new Variant("De plus, l'utilisateur peut choisir l'élément Béni et Maudit."),
+                    new Variant(
+                        "L'utilisateur peut aussi utiliser sa propre mana pour changer l'élément de l'arme au coût de 2PM."),
+                    new Variant("Le cristal de mana utilisé par le joueur obtient un bonus de  +1 charge.")
+                ]),
+            new Competence(63, "Spécialisation du pistolet PiezzoFire",
+                "L'utilisateur peut maintenant enregistrer un pistolet PiezzoFire. Ces armes utilisent des munitions standard, mais aussi les propriétés des gemmes pour ajouter des effets aux tirs. Les dégâts de base de l'arme sont de 1. Le coût pour enregistrer le pistolet PiezzoFire est le même que celui du pistolet standard. Le Pistolet PiezzoFire se différencie par sa capacité à utiliser des gemmes de niveau « Taillé » ou plus (« Précieuse » ou « Parfaite ») afin de créer des effets en combat. Un pistolet PiezzoFire ne peut contenir qu'une gemme à la fois. Mettre une gemme dans un pistolet prend 30 secondes. Si le joueur essaie de mettre une gemme dans le pistolet PiezzoFire alors qu'il en contient déjà une, la nouvelle remplace l'ancienne et l'ancienne sera détruite.  Les effets et le nombre d'utilisations sont définis par la gemme utilisée. Ces effets sont décrits dans l’annexe 5.",
+                [
+                    new Variant("Le joueur peut mettre une gemme dans le Pistolet PiezzoFire en 5 secondes."),
+                    new Variant(
+                        "Lorsque le joueur enregistre son arme à l'inscription, l'arme est chargée avec une gemme « Taillée » aléatoire."),
+                    new Variant(
+                        "L’utilisateur peut, une fois par jour, décider d'utiliser l'effet d'une gemme dans son Pistolet PiezzoFire sans que la charge ne soit consommée.")
+                ]),
+            new Competence(64, "Bang!",
+                "L’utilisateur peut, trois fois par jour ET un maximum d’une fois par combat, déclarer « BANG! » à haute voix en pointant un pistolet enregistré et fonctionnel sur une cible à moins de 15 pieds. L'action n'est utilisable que lorsque l'arme est « déchargée » (après un vrai tir par exemple). L'utilisateur inflige les dégâts de base de son arme à sa cible. Concrètement, cela permet à un fusilier de faire un tir une fois sans qu'il ait le temps de charger son arme.",
+                [
+                    new Variant(
+                        "De plus, si utilisé hors combat, l'utilisateur peut créer un effet de « peur » sur une cible pour 20 secondes et décide si « BANG! » fait du dégât ou non."),
+                    new Variant("Si utilisé hors combat, les dégâts sont augmentés de +1 (actif)."),
+                    new Variant(
+                        "Si utilisé en combat, l'utilisateur gagne une utilisation de la compétence « Presquive ».")
+                ]),
+        ];
+        GunnerT4 =
+        [
+            new Competence(65, "Décharge arcanique",
+                "L'utilisateur peut surcharger un tir de son pistolet magique en utilisant deux (2) charges de son cristal de mana. Le tir aura un bonus de +2 dégâts (Actif).",
+                [
+                    new Variant(
+                        "De plus, l'utilisateur peut modifier l'élément de son pistolet au moment du tir sans coût supplémentaire."),
+                    new Variant(
+                        "Le pistolet cause +1 dégâts (actif), mais fera reculer sa cible de cinq pas. Cela affecte les 3 prochains tirs."),
+                    new Variant(
+                        "L'utilisateur peut choisir d'utiliser cette technique sur un allié, ne causant pas de dégâts, mais lui offrant un montant de 3 PMs.")
+                ],
+                62),
+            new Competence(66, "Maîtrise du pistolet PiezzoFire",
+                "L'utilisateur peut maintenant placer trois gemmes dans un pistolet PiezzoFire. Il ne peut pas utiliser l'effet de gemmes différentes simultanément dans le pistolet, mais les gemmes de même type ont des effets cumulables. Afin d'obtenir l'effet Tiers 2 des gemmes, l'utilisateur doit se servir de 3 gemmes similaires.",
+                [
+                    new Variant("L'effet Tiers 2 des gemmes ne peut être activé qu’avec 2 gemmes similaires."),
+                    new Variant("Deux effets Tiers 1 peuvent être activés en même temps."),
+                    new Variant(
+                        "L'utilisateur choisit une gemme (sauf diamant) préférée. Maintenant, toutes les gemmes, excepté le diamant, donneront l'effet de la gemme préférée.")
+                ],
+                63),
+            new Competence(67, "Pistolero",
+                "L’utilisateur a maintenant accès aux pistolets de type revolver (barillet de 6 balles maximum).  Une fois rechargé à plein, la dernière balle fera un bonus de +2 dégâts (actif).",
+                [
+                    new Variant("L’utilisateur obtient un bonus de +1 dégât pour un total de +3 dégâts (actif)."),
+                    new Variant("Le type de bonus devient « passif » au lieu d’actif."),
+                    new Variant(
+                        "Après avoir déchargé au minimum un barillet complet (6 tirs), les tirs subséquents font des dégâts de type feu pour la durée du combat.")
+                ],
+                61),
+            new Competence(68, "Ricochet",
+                "L’utilisateur peut, une fois par combat ET suivant un tir réussi, pointer une seconde cible qui subira le même effet. Ceci est cumulable avec n'importe quelle compétence du Fusilier.",
+                [
+                    new Variant("De plus, l’utilisateur peut, une fois par jour,  désigner une cible additionnelle."),
+                    new Variant("Le tir du ricochet causera +1 dégât (base)."),
+                    new Variant(
+                        "L’utilisateur peut, une fois par scénario, faire un ricochet de manière non-conventionnelle. Par exemple, au travers d’un mur, à une distance impensable, etc.")
+                ])
+        ];
+        BarbarianT3 =
+        [
+            new Competence(69, "Coriace",
+                "Le corps de l’utilisateur est renforcé, il gagne 2x DR1 qui se récupèrent entre les combats. Ces points ne se cumulent PAS avec les points de DR obtenus par les pièces d'armure de torse.",
+                [
+                    new Variant(
+                        "En plus, une fois par scénario, le joueur peut ignorer la toxicité d'un produit alchimique."),
+                    new Variant(
+                        "L’utilisateur peut, durant 5 minutes ET une fois par jour, mettre en pause les effets d’un produit alchimique. Le temps et les effets seront alors suspendus et reprennent leur progression après 5 minutes."),
+                    new Variant("Le joueur peut résister à une (1) brisure de membre par jour.")
+                ]),
+            new Competence(70, "Rage",
+                "L’utilisateur peut, une fois par combat, sacrifier 3 PV Max qui seront récupérés suivant une nuit de sommeil ou au prochain scénario. En échange, cela maximise ses PVT (la baisse des max PV n’affecte pas ce nombre). Durant le combat, l’utilisateur ne pourra pas faire d’action nécessitant de la concentration ou lancer des sorts. Suivant la fin du combat, il aura l’effet « fatigue » pour une durée égale au nombre de PV Max manquants, multiplié en minutes. Note : Dans le cas où la compétence est utilisée par un utilisateur ayant moins de 3 PV Max, les PV seront de 1 + PVT pour la durée du combat. Toutefois, l’utilisateur va mourir à la fin de ce-dit combat. Il devra alors passer devant la Mort ou recevoir une résurrection.",
+                [
+                    new Variant(
+                        "La compétence est utilisable deux (2) fois par combat, mais la seconde utilisation coûte 4 PV Max plutôt que 2."),
+                    new Variant(
+                        "De plus, l'utilisateur peut sacrifier 3 PV Max pour se stabiliser s'il tombe agonisant. Il tombe à 1 PV et en convalescence pour 30 minutes."),
+                    new Variant("L'utilisateur obtient un bonus de  +1 PVT Max.")
+                ]),
+            new Competence(71, "Sauvage",
+                "L’utilisateur obtient un bonus de +1 PV Max et peut, une fois par jour, résister à un effet de poison ou de maladie.",
+                [
+                    new Variant(
+                        "De plus, le joueur peut, une fois par combat, décider de briser son arme en attaquant quelqu'un, obtenant un bonus de +2 dégâts (actif). L’arme gagne l’effet « brisé » suivant l’utilisation. Dans le cas d’une arme naturelle, il va souffrir d'un brise-membre et ne pourra pas se servir de celle-ci avant d'être soigné. Note : Non utilisable avec les armes à feu."),
+                    new Variant("L’utilisateur obtient un bonus de +1 PV Max, pour un total de +2 PV Max."),
+                    new Variant("L’utilisateur obtient une régénération naturelle de +1 PV par heure.")
+                ]),
+            new Competence(72, "Tribalisme",
+                "Le joueur peut payer 2 PV Max afin de créer, sur une cible, un symbole tribal. Les PV Max utilisés pour créer ces symboles ne peuvent être récupérés que lorsque le symbole est enlevé ou utilisé. L'application du symbole prend 15 minutes et est dessinée sur sa cible (peinture, cicatrice, tatoo, etc.). Le symbole n'est aucunement altérable SAUF par son créateur, qui peut prendre 10 minutes afin de le retirer. L’utilisateur peut instantanément reconnaître une cible portant le symbole, même si son apparence est modifiée ou transmutée. La cible portant le symbole ne peut achever le créateur du symbole, car elle le suivra dans la mort. Lorsque la cible tombe à 0 PV, elle est automatiquement stabilisée et son symbole s'efface. 5 minutes suivant le début de sa convalescence, la cible gagne une régénération de 1 PV par minute jusqu'à ce qu'elle atteigne 5 PV et son max PV est de 5. Sa convalescence durera jusqu’à la fin de la régénération. Ces PV Max sont récupérés lors du prochain événement après qu’un symbole soit retiré.",
+                [
+                    new Variant(
+                        "L’utilisateur peut faire un rituel de 30 minutes afin d’appliquer un symbole à autant de joueurs qu'il le décide d’un coup. Il devra tout de même payer 2 PV Max par symbole."),
+                    new Variant(
+                        "L’utilisateur peut instantanément identifier les effets mentaux affectant une personne avec son symbole."),
+                    new Variant("La cible arborant le symbole peut résister à un effet mental, une fois par jour.")
+                ])
+        ];
+        BarbarianT4 =
+        [
+            new Competence(73, "Attaque bestiale",
+                "L'utilisateur a un bonus de +3 dégâts (Actif) sur 5 touches par jour.",
+                [
+                    new Variant("Permet d'utiliser la compétence 2 fois par combat à la place de 5 touches par jour."),
+                    new Variant(
+                        "De plus, la cible subit l’effet « Engourdissement » du membre touché pendant 30 secondes."),
+                    new Variant("La frappe devient imparable, mais limitée à 3 touches par jour.")
+                ],
+                "Citer « Attaque bestiale X [Engourdissement 30 secondes (Si Variante 2))] [Imparable Variante 3] »"),
+            new Competence(74, "Chef tribal",
+                "L’utilisateur peut maintenant payer 1 PV Max afin de créer un symbole tribal sur une cible, seulement pour les 5 premiers tatoués dans le scénario.",
+                [
+                    new Variant(
+                        "L'utilisateur peut, une fois par jour, guérir chacun des porteurs de son symbole du total des PVs Max manquant de l’utilisateur. Cette guérison doit être jouée pendant 5 minutes."),
+                    new Variant(
+                        "De plus, la cible portant un symbole peut ignorer les dégâts du premier projectile par combat. Attention, les projectiles d’arme de siège ne sont pas inclus."),
+                    new Variant(
+                        "De plus, la cible portant un symbole peut, une fois par jour,  résister à un effet physique de son choix.")
+                ],
+                72),
+            new Competence(75, "Sceptique",
+                "L'utilisateur gagne un bonus de +2 PV Max, mais ne possède plus aucun PM, et ne pourra plus jamais les augmenter au-delà de 0.",
+                [
+                    new Variant(
+                        "De plus, l’utilisateur peut choisir un élément (feu, foudre, glace ou acide) contre lequel il aura une DR2 infinie. Il obtient aussi cette DR2 contre les dégâts magiques."),
+                    new Variant("L’utilisateur obtient un bonus de +1 PV Max, pour un total de +3 PV Max."),
+                    new Variant(
+                        "Le barbare peut régénérer ses PV en mangeant des parchemins sur le(s)quel(s) sont inscrits des sorts. La régénération sera égale au niveau de sort du parchemin. NOTE: Un parchemin avec la forme Contrat sera considéré comme signé, le cas échéant.")
+                ]),
+            new Competence(76, "Voile rouge",
+                "Lorsqu'il est en rage, l'utilisateur devient immunisé à tous les nouveaux effets mentaux.",
+                [
+                    new Variant("L'utilisateur peut, au début de sa rage, ignorer un effet mental déjà actif."),
+                    new Variant("L'utilisateur est considéré en rage tant qu'il possède des PVT."),
+                    new Variant("L'utilisateur obtient un bonus de  +2 PVT Max.")
+                ])
+        ];
+        SpecialistT1 = [];
+        SpecialistT2 = [];
+        BardT3 = [];
+        BardT4 = [];
+        TrapperT3 = [];
+        TrapperT4 = [];
+        RogueT3 = [];
+        RogueT4 = [];
+        TechnicianT3 = [];
+        TechnicianT4 = [];
+        CharlatanT3 = [];
+        CharlatanT4 = [];
+        InquisitorT3 = [];
+        InquisitorT4 = [];
+        ArcaneT1 =
+        [
+            new Competence(77, "Novice de l'Arcane (Abjuration)", "L'utilisateur apprend le lexique Tiers 1 d’une des 7 écoles de l’Arcane. Cette compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence. NOTE : les mots des autres lexiques ou des autres niveaux peuvent être appris par le biais d’autres joueurs, mais ne peuvent être utilisés qu’en possédant les compétences pré-requises. En cas de mots « hors lexique », un pré-requis sera indiqué.", 
+            [
+                new Variant("L’utilisateur obtient un bonus de +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +0.5 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire tiers 1 (hasard).")
+            ]),
+            new Competence(78, "Novice de l'Arcane (Conjuration)", "L'utilisateur apprend le lexique Tiers 1 d’une des 7 écoles de l’Arcane. Cette compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence. NOTE : les mots des autres lexiques ou des autres niveaux peuvent être appris par le biais d’autres joueurs, mais ne peuvent être utilisés qu’en possédant les compétences pré-requises. En cas de mots « hors lexique », un pré-requis sera indiqué.", 
+            [
+                new Variant("L’utilisateur obtient un bonus de +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +0.5 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire tiers 1 (hasard).")
+            ]),
+            new Competence(79, "Novice de l'Arcane (Divination)", "L'utilisateur apprend le lexique Tiers 1 d’une des 7 écoles de l’Arcane. Cette compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence. NOTE : les mots des autres lexiques ou des autres niveaux peuvent être appris par le biais d’autres joueurs, mais ne peuvent être utilisés qu’en possédant les compétences pré-requises. En cas de mots « hors lexique », un pré-requis sera indiqué.", 
+            [
+                new Variant("L’utilisateur obtient un bonus de +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +0.5 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire tiers 1 (hasard).")
+            ]),
+            new Competence(80, "Novice de l'Arcane (Enchantement)", "L'utilisateur apprend le lexique Tiers 1 d’une des 7 écoles de l’Arcane. Cette compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence. NOTE : les mots des autres lexiques ou des autres niveaux peuvent être appris par le biais d’autres joueurs, mais ne peuvent être utilisés qu’en possédant les compétences pré-requises. En cas de mots « hors lexique », un pré-requis sera indiqué.", 
+            [
+                new Variant("L’utilisateur obtient un bonus de +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +0.5 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire tiers 1 (hasard).")
+            ]),
+            new Competence(81, "Novice de l'Arcane (Évocation)", "L'utilisateur apprend le lexique Tiers 1 d’une des 7 écoles de l’Arcane. Cette compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence. NOTE : les mots des autres lexiques ou des autres niveaux peuvent être appris par le biais d’autres joueurs, mais ne peuvent être utilisés qu’en possédant les compétences pré-requises. En cas de mots « hors lexique », un pré-requis sera indiqué.", 
+            [
+                new Variant("L’utilisateur obtient un bonus de +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +0.5 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire tiers 1 (hasard).")
+            ]),
+            new Competence(82, "Novice de l'Arcane (Illusion)", "L'utilisateur apprend le lexique Tiers 1 d’une des 7 écoles de l’Arcane. Cette compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence. NOTE : les mots des autres lexiques ou des autres niveaux peuvent être appris par le biais d’autres joueurs, mais ne peuvent être utilisés qu’en possédant les compétences pré-requises. En cas de mots « hors lexique », un pré-requis sera indiqué.", 
+            [
+                new Variant("L’utilisateur obtient un bonus de +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +0.5 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire tiers 1 (hasard).")
+            ]),
+            new Competence(83, "Novice de l'Arcane (Nécromancie)", "L'utilisateur apprend le lexique Tiers 1 d’une des 7 écoles de l’Arcane. Cette compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence. NOTE : les mots des autres lexiques ou des autres niveaux peuvent être appris par le biais d’autres joueurs, mais ne peuvent être utilisés qu’en possédant les compétences pré-requises. En cas de mots « hors lexique », un pré-requis sera indiqué.", 
+            [
+                new Variant("L’utilisateur obtient un bonus de +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +0.5 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire tiers 1 (hasard).")
+            ]),
+            new Competence(84, "Concentration mineure", "L’utilisateur peut, à chaque incantation, endurer UNE frappe faisant 3 dégâts et moins avant de perdre sa concentration. Toutefois, il subit les dégâts reçus.", 
+                [
+                    new Variant("L’utilisateur obtient un bonus de  +1 PM Max."),
+                    new Variant("La frappe que l’utilisateur peut endurer est maintenant de 4 dégâts et moins."),
+                    new Variant("L’utilisateur peut endurer une frappe de plus, pour un total de deux frappes, accumulant un total de 3 dégâts maximum.")
+                ]),
+            new Competence(85, "Électrochocs", "L’utilisateur peut stabiliser une cible en agonie en payant en PM la moitié (50% à la baisse) de ses PM Max. La cible sera alors à 1 PV et entrera en convalescence. L’utilisateur ne peut plus récupérer de PM pour les 15 prochaines minutes. Le coût minimum de mana est de 1 en tout temps.", 
+                [
+                    new Variant("L’utilisateur crée un bouclier intangible pour sa cible. Il pourra absorber une quantité de dégâts égal à 1 dégât par tranche de 5 PM utilisés par l’utilisateur."),
+                    new Variant("Le coût de mana de la compétence est maintenant équivalent au quart des PM Max de l'utilisateur."),
+                    new Variant("Le coût de mana de la compétence est maintenant équivalent aux trois quarts des PM Max de l'utilisateur. La cible revient immédiatement à la vie comme si sa convalescence était complétée. Elle revient à elle avec 1 PV, et + 1 PV par tranche de 10 PM utilisés.")
+                ],
+                "Aviser le joueur des conditions de sa convalescence."),
+            new Competence(86, "Études novices", "Cette compétence peut être acquise une fois par école. Elle permet de connaître les valeurs de tous ses mots de Tiers 1 de l’école choisie.", 
+                [
+                    new Variant("L’utilisateur obtient +0.25 PM Max."),
+                    new Variant("L’utilisateur obtient les valeurs d’une deuxième école de son choix."),
+                    new Variant("L’utilisateur obtient + 0.5 sort actif par scénario (arrondi à l’entier inférieur).")
+                ]),
+            new Competence(87, "Frappe ensorcelée", "L’utilisateur peut, au coût de 2 PM, infuser son arme de mana après une méditation de 15 secondes non interrompue. Cela lui permet de gagner un bonus de +1 dégâts magique (actif) sur sa prochaine frappe. L’énergie se décharge après 5 minutes et la compétence ne peut être effectuée sur une arme portée par quelqu’un d’autre.", 
+                [
+                    new Variant("Suivant la méditation de 15 secondes, l’utilisateur gagne une charge de DR2 applicable seulement s’il ne porte aucune source de DR (armure, objet magique, etc.)."),
+                    new Variant("L’utilisateur peut infuser plus de PM pour gagner un bonus additionnel de +1 dégât (actif) par tiers d'ensorcellement. En contrepartie, la frappe coûte 2 PM additionnels par tiers d’ensorcellement. (Les tiers d’ensorcellement vont de 0 à 3 selon le matériel de l’arme.)"),
+                    new Variant("L’utilisateur peut, en situation hors combat et une fois par jour, effectuer un assommement de 5 minutes avec sa frappe ensorcelée. La cible doit être surprise. Si la frappe échoue, l’arme est déchargée.")
+                ],
+                "Variante 3 : citer « Assommement 5 minutes »"),
+            new Competence(88, "Méditation", "L’utilisateur peut méditer afin de regagner des PMs. Le taux de régénération de base est de 1 PM par 10 de PM Max. (minimum 1).", 
+                [
+                    new Variant("Le temps de méditation n’est que de 15 minutes, mais si l’utilisateur est interrompu, il doit recommencer les 15 minutes de méditation. La méditation demande un effort de concentration active, mais elle peut être accompagnée d’une activité calme telle que le yoga."),
+                    new Variant("Le temps de méditation est de 30 minutes. La méditation est relaxante, elle ne demande pas de concentration, mais ne peut pas être accompagnée d’effort physique."),
+                    new Variant("Le temps de méditation est de 1 heure. L’utilisateur n’a aucune restriction sur ses activités.")
+                ])
+        ];
+        ArcaneT2 =
+        [
+            new Competence(89, "Apprenti de l’Arcane (Abjuration)", "L'utilisateur apprend le lexique Tiers 2 d’une des 7 écoles de l’Arcane. La compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence.", 
+            [
+                new Variant("L’utilisateur gagne +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +1 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire du Tiers 2 (Hasard).")
+            ]),
+            new Competence(90, "Apprenti de l’Arcane (Conjuration)", "L'utilisateur apprend le lexique Tiers 2 d’une des 7 écoles de l’Arcane. La compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence.", 
+            [
+                new Variant("L’utilisateur gagne +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +1 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire du Tiers 2 (Hasard).")
+            ]),
+            new Competence(91, "Apprenti de l’Arcane (Divination)", "L'utilisateur apprend le lexique Tiers 2 d’une des 7 écoles de l’Arcane. La compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence.", 
+            [
+                new Variant("L’utilisateur gagne +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +1 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire du Tiers 2 (Hasard).")
+            ]),
+            new Competence(92, "Apprenti de l’Arcane (Enchantement)", "L'utilisateur apprend le lexique Tiers 2 d’une des 7 écoles de l’Arcane. La compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence.", 
+            [
+                new Variant("L’utilisateur gagne +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +1 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire du Tiers 2 (Hasard).")
+            ]),
+            new Competence(93, "Apprenti de l’Arcane (Évocation)", "L'utilisateur apprend le lexique Tiers 2 d’une des 7 écoles de l’Arcane. La compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence.", 
+            [
+                new Variant("L’utilisateur gagne +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +1 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire du Tiers 2 (Hasard).")
+            ]),
+            new Competence(94, "Apprenti de l’Arcane (Illusion)", "L'utilisateur apprend le lexique Tiers 2 d’une des 7 écoles de l’Arcane. La compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence.", 
+            [
+                new Variant("L’utilisateur gagne +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +1 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire du Tiers 2 (Hasard).")
+            ]),
+            new Competence(95, "Apprenti de l’Arcane (Nécromancie)", "L'utilisateur apprend le lexique Tiers 2 d’une des 7 écoles de l’Arcane. La compétence peut être acquise un maximum de 7 fois (une fois par école). Il est possible de changer de variante à chaque achat de la compétence.", 
+            [
+                new Variant("L’utilisateur gagne +0.25 PM Max."),
+                new Variant("L’utilisateur obtient un bonus de +1 sort actif par scénario (arrondi à l’entier inférieur)."),
+                new Variant("L’utilisateur obtient les valeurs d’un mot aléatoire du Tiers 2 (Hasard).")
+            ]),
+            new Competence(96, "Apoptose", "L’utilisateur peut consommer ses PV afin de récupérer la même quantité de PM. Cette action prend 10 secondes par PV consommé.", 
+                [
+                    new Variant("L’utilisateur peut, une fois par cible (morte) et suivant une scène de 10 secondes, consommer une partie de son essence afin de regagner 1 PM. L’utilisateur doit être à moins de 5 pieds du corps."),
+                    new Variant("L’utilisateur peut, une fois par combat, consommer 3 PV pour récupérer 4 PM instantanément."),
+                    new Variant("L’utilisateur peut, lors d’une incantation et s’il manque de PM afin de lancer le sort, substituer ses PM manquants par le double en PV. Utilisable seulement pour des sorts. Si l’utilisateur tombe à 0 PV par cette méthode, il meurt et doit soit aller voir la Mort, soit obtenir une résurrection.")
+                ]),
+            new Competence(97, "Bâton de pouvoir", "L’utilisateur peut entreposer un sort de portée « Touché » dans son bâton, lui permettant de décharger le sort avec une frappe du bâton. Le sort entreposé est perdu après un délai de 5 minutes. Le bâton ne peut pas faire de dégât ou être utilisé par une autre compétence tant qu’il entrepose un sort. Le sort entreposé doit être de Tiers 3 ou moins.", 
+                [
+                    new Variant("L’utilisateur obtient un bonus de +1 PM Max."),
+                    new Variant("Le sort entreposé coûtera +2 PM, mais aura son tiers de pouvoir augmenté de 1."),
+                    new Variant("Le sort entreposé dans le bâton est perdu après un délai de 30 minutes au lieu de 5.")
+                ]),
+            new Competence(98, "Études apprenties", "L'utilisateur peut, lors de l'acquisition de la compétence, étudier les valeurs de ses mots connus (Tiers 3 maximum). Cette compétence est achetable à l'infini et il est possible de changer de variante à chaque achat de la compétence.", 
+                [
+                    new Variant("L’utilisateur obtient la liste complète des valeurs d’un (1) mot de son choix."),
+                    new Variant("L’utilisateur choisit trois (3) mots, mais qu'une valeur inconnue aléatoire (Hasard) par mot."),
+                    new Variant("L'utilisateur choisit deux (2) mots, mais n'obtient qu’une valeur de son choix entre Potentia, Flux et Arcainum pour ses deux mots.")
+                ]),
+            new Competence(99, "Repositionnement", "L’utilisateur peut, une fois par combat, effectuer jusqu’à 3 pas consécutifs lors d’une incantation sans perdre sa concentration. Par contre, durant le déplacement, l’utilisateur ne peut pas continuer d’incanter et le déplacement doit durer 5 secondes maximum.", 
+                [
+                    new Variant("Lors du repositionnement, l'utilisateur devient intangible et résiste au premier coup physique."),
+                    new Variant("Suite au repositionnement, l'utilisateur se voit octroyer un bouclier arcanique qui le protège des 3 prochains points de dégâts magiques (non élémentaux). Le bouclier se décharge à la fin du combat."),
+                    new Variant("L’utilisateur peut maintenant effectuer jusqu’à 5 pas consécutifs.")
+                ],
+                "Variante 1 : citer « Résiste »"),
+            new Competence(100, "Sorts bi-disciplinaires", "L’utilisateur apprend à combiner les mots de deux écoles différentes. L’utilisation d’une seconde école ajoute un multiplicateur de 20% à la valeur de Flux globale.", 
+                [
+                    new Variant("L’utilisateur gagne +3 PM Max."),
+                    new Variant("L’utilisateur obtient un bonus de +2 sort actif par scénario."),
+                    new Variant("L’utilisateur obtient un bonus de +5 résistance à l’Arcainum.")
+                ])
+        ];
     }
-    
-    
 }
