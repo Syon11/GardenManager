@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GardenManager", "GardenManager\GardenManager.csproj", "{7A513B20-236E-4AFC-B206-767D7D8626B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharacterManager.API", "CharacterManager.API\CharacterManager.API.csproj", "{EA57814F-908E-4891-AB74-1A059A19E28D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{7A513B20-236E-4AFC-B206-767D7D8626B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A513B20-236E-4AFC-B206-767D7D8626B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A513B20-236E-4AFC-B206-767D7D8626B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA57814F-908E-4891-AB74-1A059A19E28D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA57814F-908E-4891-AB74-1A059A19E28D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA57814F-908E-4891-AB74-1A059A19E28D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA57814F-908E-4891-AB74-1A059A19E28D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

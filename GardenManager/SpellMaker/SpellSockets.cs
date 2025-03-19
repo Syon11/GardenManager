@@ -38,7 +38,7 @@ public class SpellSockets
     private void HandleClientRequest(Socket clientSocket)
     {
         string spellsJson = String.Empty;
-        var buffer = new byte[1024];
+        var buffer = new byte[16384];
         // Avons-nous des données? clientSocket.Available
         var bytesRead = clientSocket.Receive(buffer);
         if (bytesRead > 0)
@@ -68,7 +68,7 @@ public class SpellSockets
                 Console.WriteLine("Malformed JSON received");
             }
             Console.WriteLine($"Received {spellsJson}");
-            
+            Console.WriteLine($"{message.Length} bytes received");
         }
 
         clientSocket.Close();

@@ -81,7 +81,7 @@ public class Spell
         foreach (Word word in Incantation)
         {
             if (Schools.Contains(word.School)) continue;
-            throw new NotPartOfSelectedSchoolsException($"Selected word: {word.WordText} is not part of selected schools.");
+            throw new NotPartOfSelectedSchoolsException($"Mot sélectionné: {word.WordText} ne fait partie d'aucune écoles choisies du sort.");
         }
     }
 
@@ -368,6 +368,10 @@ public class Spell
                     ModifierDescriptions.Append($"Impact: ");
                     break;
                 case "Inversement" :
+                    if (ModifierTiers[iter] == 0)
+                    {
+                        continue;
+                    }
                     IsInverse = true;
                     ModifierDescriptions.Append($"Inversement: ");
                     break;
