@@ -8,6 +8,7 @@ public abstract class ConfigWord : Word
     public float ArcainumEffect { get; set; }
     public float FluxEffect { get; set; }
     
+    public ConfigWord(){}
     public ConfigWord(string WordText, string WordInFrench, int Tier, School school, float potentiaEffect, float arcainumEffect, float fluxEffect, bool isHidden = false) : base(WordText, WordInFrench, Tier, school, isHidden)
     {
         PotentiaEffect = potentiaEffect;

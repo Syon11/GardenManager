@@ -5,6 +5,7 @@ namespace GardenManager.Model;
 
 public class Character
 {
+    public long Id { get; set; }
     public string Name { get; set; }
     public long HP { get; set; }
     public long TempHP { get; set; }

@@ -6,6 +6,8 @@ public class ModifierWord : ConfigWord
 {
     public ArcaneModifier? Modifier { get; set; }
     public bool IsSchoolWord { get; set; } 
+    
+    public ModifierWord(){}
     public ModifierWord
     (
         string WordText, 

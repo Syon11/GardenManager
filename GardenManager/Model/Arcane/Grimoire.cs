@@ -2,6 +2,7 @@ namespace GardenManager.Model.Arcane;
 
 public class Grimoire
 {
+    public long Id { get; set; }
     private List<Word> Words { get; set; } = new List<Word>();
     private List<Spell> Spells { get; set; } = new List<Spell>();
 

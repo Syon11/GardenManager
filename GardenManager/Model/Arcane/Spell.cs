@@ -8,6 +8,7 @@ namespace GardenManager.Model.Arcane;
 
 public class Spell
 {
+    public long Id { get; set; }
     public decimal PotentiaMultiplier { get; set; } = 1.0m;
     public decimal ArcainumMultiplier { get; set; } = 1.0m;
     public decimal FluxMultiplier { get; set; } = 1.0m;
@@ -15,7 +16,7 @@ public class Spell
     public int ManaCost { get; set; }
     public int HealthCost { get; set; } = 0;
     public string SpellDescription { get; set; } = String.Empty;
-    public StringBuilder ModifierDescriptions { get; set; } = new StringBuilder();
+    public string ModifierDescriptions { get; set; } = String.Empty;
     public List<Word> Incantation { get; set; } = [];
     public List<ArcaneEffect> Effects { get; set; } = [];
     public List<int> EffectTiers { get; set; } = [];
@@ -283,6 +284,7 @@ public class Spell
 
     private void EnableModifiers()
     {
+        StringBuilder sb = new StringBuilder();
         int iter = 0;
         foreach (ArcaneModifier mod in Modifiers)
         {
@@ -292,80 +294,80 @@ public class Spell
             switch (mod.Name)
             {
                 case "Cibles":
-                    ModifierDescriptions.Append($"Cibles: ");
+                    sb.Append($"Cibles: ");
                     break;
                 case "Combinaison":
                     IsCombinaison = true;
-                    ModifierDescriptions.Append($"Combinaison: ");
+                    sb.Append($"Combinaison: ");
                     break;
                 case "Durée":
-                    ModifierDescriptions.Append($"Durée: ");
+                    sb.Append($"Durée: ");
                     break;
                 case "Distance" :
-                    ModifierDescriptions.Append($"Distance: ");
+                    sb.Append($"Distance: ");
                     break;
                 case "ElementalFeu" :
                     if (IsElemental)
                     {
-                        ModifierDescriptions.Clear();
+                        sb.Clear();
                         throw new TooManyElementsException("Only one element can be selected.");
                     }
                     IsElemental = true;
                     Element = Enums.Element.Fire;
-                    ModifierDescriptions.Append($"Elemental: ");
+                    sb.Append($"Elemental: ");
                     break;
                 case "ElementalGlace" :
                     if (IsElemental)
                     {
-                        ModifierDescriptions.Clear();
+                        sb.Clear();
                         throw new TooManyElementsException("Only one element can be selected.");
                     }
                     IsElemental = true;
                     Element = Enums.Element.Ice;
-                    ModifierDescriptions.Append($"Elemental: ");
+                    sb.Append($"Elemental: ");
                     break;
                 case "ElementalFoudre" :
                     if (IsElemental)
                     {
-                        ModifierDescriptions.Clear();
+                        sb.Clear();
                         throw new TooManyElementsException("Only one element can be selected.");
                     }
                     IsElemental = true;
                     Element = Enums.Element.Thunder;
-                    ModifierDescriptions.Append($"Elemental: ");
+                    sb.Append($"Elemental: ");
                     break;
                 case "ElementalAcide" :
                     if (IsElemental)
                     {
-                        ModifierDescriptions.Clear();
+                        sb.Clear();
                         throw new TooManyElementsException("Only one element can be selected.");
                     }
                     IsElemental = true;
                     Element = Enums.Element.Acid;
-                    ModifierDescriptions.Append($"Elemental: ");
+                    sb.Append($"Elemental: ");
                     break;
                 case "ElementalBeni" :
                     if (IsElemental)
                     {
-                        ModifierDescriptions.Clear();
+                        sb.Clear();
                         throw new TooManyElementsException("Only one element can be selected.");
                     }
                     IsElemental = true;
                     Element = Enums.Element.Holy;
-                    ModifierDescriptions.Append($"Elemental: ");
+                    sb.Append($"Elemental: ");
                     break;
                 case "ElementalMaudit" :
                     if (IsElemental)
                     {
-                        ModifierDescriptions.Clear();
+                        sb.Clear();
                         throw new TooManyElementsException("Only one element can be selected.");
                     }
                     IsElemental = true;
                     Element = Enums.Element.Unholy;
-                    ModifierDescriptions.Append($"Elemental: ");
+                    sb.Append($"Elemental: ");
                     break;
                 case "Impact" :
-                    ModifierDescriptions.Append($"Impact: ");
+                    sb.Append($"Impact: ");
                     break;
                 case "Inversement" :
                     if (ModifierTiers[iter] == 0)
@@ -373,19 +375,20 @@ public class Spell
                         continue;
                     }
                     IsInverse = true;
-                    ModifierDescriptions.Append($"Inversement: ");
+                    sb.Append($"Inversement: ");
                     break;
                 case "Rayon" :
-                    ModifierDescriptions.Append($"Rayon: ");
+                    sb.Append($"Rayon: ");
                     break;
                 case "Sacrificiel" :
                     IsSacrificiel = true;
-                    ModifierDescriptions.Append($"Sacrificiel: ");
+                    sb.Append($"Sacrificiel: ");
                     break;
             }
-            ModifierDescriptions.Append(mod.DescriptionAtThresholds[currentTier]);
+            sb.Append(mod.DescriptionAtThresholds[currentTier]);
             iter++;
         }
+        ModifierDescriptions = sb.ToString();
     }
 
     private void RecalculateSacrificialCost()

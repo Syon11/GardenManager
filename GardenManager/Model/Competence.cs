@@ -7,9 +7,11 @@ public class Competence
     public long Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
+    public int Tier { get; set; }
     public List<Variant> Variants { get; set; }
     public string? VocalComponent { get; set; }
     public long? PrerequisiteId { get; set; }
+    public List<Character> Characters { get; set; }
 
     public Competence(){}
     public Competence(long id, string name, string description, List<Variant> variants)

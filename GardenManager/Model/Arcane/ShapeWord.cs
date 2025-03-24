@@ -6,6 +6,7 @@ public class ShapeWord : ConfigWord
 {
     public ArcaneShape Shape { get; set; }
     
+    public ShapeWord(){}
     public ShapeWord
     (
         string WordText, 

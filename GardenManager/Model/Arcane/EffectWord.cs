@@ -6,6 +6,7 @@ public class EffectWord : ConfigWord
 {
     public ArcaneEffect Effect { get; set; }
 
+    public EffectWord(){}
     public EffectWord
     (
         string WordText, 
